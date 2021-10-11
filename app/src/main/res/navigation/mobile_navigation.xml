@@ -9,17 +9,17 @@
         android:id="@+id/navigation_assessments"
         android:name="com.guelphwellingtonparamedicsapp.ui.assessments.AssessmentsFragment"
         android:label="@string/title_assessments"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_resources" />
 
     <fragment
         android:id="@+id/navigation_resources"
         android:name="com.guelphwellingtonparamedicsapp.ui.resources.ResourcesFragment"
         android:label="@string/title_resources"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_assessments" />
 
     <fragment
         android:id="@+id/navigation_contacts"
         android:name="com.guelphwellingtonparamedicsapp.ui.contacts.ContactsFragment"
         android:label="@string/title_contacts"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_contacts" />
 </navigation>
