@@ -3,7 +3,7 @@ package com.guelphwellingtonparamedicsapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.coroutines.*
+import java.lang.Thread.sleep
 
 class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,11 +11,8 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val intent = Intent(this, LoginActivity::class.java)
-
-        GlobalScope.launch(context = Dispatchers.Main) {
-            delay(3000)
-            startActivity(intent)
-            finish()
-        }
+        sleep(3000)
+        startActivity(intent)
+        finish()
     }
 }
