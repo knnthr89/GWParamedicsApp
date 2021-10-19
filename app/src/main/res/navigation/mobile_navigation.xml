@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_assessments"
-        android:name="com.guelphwellingtonparamedicsapp.ui.assessments.AssessmentsFragment"
+        android:name="com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment"
         android:label="@string/title_assessments"
         tools:layout="@layout/fragment_resources" />
 
     <fragment
         android:id="@+id/navigation_resources"
-        android:name="com.guelphwellingtonparamedicsapp.ui.resources.ResourcesFragment"
+        android:name="com.guelphwellingtonparamedicsapp.fragments.ResourcesFragment"
         android:label="@string/title_resources"
         tools:layout="@layout/fragment_assessments" />
 
     <fragment
         android:id="@+id/navigation_contacts"
-        android:name="com.guelphwellingtonparamedicsapp.ui.contacts.ContactsFragment"
+        android:name="com.guelphwellingtonparamedicsapp.fragments.ContactsFragment"
         android:label="@string/title_contacts"
         tools:layout="@layout/fragment_contacts" />
 </navigation>
