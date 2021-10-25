@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
+import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 
 class InteractiveFormsAdapter() : RecyclerView.Adapter<InteractiveFormsAdapter.ViewHolder>() {
@@ -14,9 +17,16 @@ class InteractiveFormsAdapter() : RecyclerView.Adapter<InteractiveFormsAdapter.V
     private lateinit var context: Context
     private lateinit var interactiveFormsList: ArrayList<InteractiveFormModel>
 
-    constructor(context: Context, interactiveFormsList : ArrayList<InteractiveFormModel>) : this() {
+    private var listener : SelectedInteractiveForm? = null
+
+    interface SelectedInteractiveForm {
+        fun selected(id: Int)
+    }
+
+    constructor(context: Context, interactiveFormsList : ArrayList<InteractiveFormModel>, listener : SelectedInteractiveForm) : this() {
         this.context = context
         this.interactiveFormsList = interactiveFormsList
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(
@@ -31,6 +41,10 @@ class InteractiveFormsAdapter() : RecyclerView.Adapter<InteractiveFormsAdapter.V
         val interactiveForm = interactiveFormsList[position]
 
         holder.titleTextView.text = interactiveForm.title
+
+        holder.itemView.setOnClickListener {
+            listener?.selected(interactiveForm.id)
+        }
     }
 
     override fun getItemCount(): Int {

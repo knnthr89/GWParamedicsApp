@@ -12,7 +12,7 @@ import com.guelphwellingtonparamedicsapp.R
 class Communication(var context: Context?) {
 
     companion object {
-        var SERVER = "http://fcf8-2607-fea8-1be0-1bcb-58d5-9ef0-9e80-c15e.ngrok.io/"
+        var SERVER = "http://ad10-2607-fea8-1be0-1bcb-c058-f903-d209-2b07.ngrok.io/"
     }
 
     private var communicationListener: CommunicationListener? = null
@@ -22,7 +22,7 @@ class Communication(var context: Context?) {
         fun onCommunicationError(path: CommunicationPath, error: String, code: Int?)
     }
 
-    fun getJSON(path: CommunicationPath, eParams: HashMap<String, String> = HashMap()) {
+    fun getJSON(path: CommunicationPath, eParams: HashMap<String, String> = HashMap(), id : Int? = null) {
         val responseListener = Response.Listener<String> { response ->
             if (response.isNotBlank()) {
                 when(path){
@@ -34,9 +34,9 @@ class Communication(var context: Context?) {
                     }
                     CommunicationPath.INTERACTIVE_FORMS -> {
                         val res = JSONArray(response)
-                        val obj = JSONObject()
-                        obj.put("data", res)
-                        communicationListener?.onCommunicationSuccess(path, obj)
+                            val obj = JSONObject()
+                            obj.put("data", res)
+                            communicationListener?.onCommunicationSuccess(path, obj)
                     }
                     else -> {
                         val res = JSONObject(response)
@@ -70,7 +70,7 @@ class Communication(var context: Context?) {
 
         }
 
-        var webServices = "$SERVER${path.path}"
+        var webServices = if(id == null) {"$SERVER${path.path}"}else{"$SERVER${path.path}/$id"}
 
         for ((key, value) in eParams) {
             webServices += "$key=$value&"

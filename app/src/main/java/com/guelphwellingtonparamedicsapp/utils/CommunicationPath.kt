@@ -4,20 +4,21 @@ import android.util.SparseArray
 
 enum class CommunicationPath(index: Int) {
     CONTACT_GROUPS(1),
-    INTERACTIVE_FORMS(2);
-
+    INTERACTIVE_FORMS(2),
+    INDIVIDUAL_FORM(3);
 
     var index : Int = 0
     internal set
 
-    val path: String
+    val path : String
         get() {
             var description = ""
 
             val method = valueOfEnum(index)
-            when(method){
-                CONTACT_GROUPS -> description = "ContactGroups"
-                INTERACTIVE_FORMS -> description = "InteractiveForms"
+            description = when(method){
+                CONTACT_GROUPS -> "ContactGroups"
+                INTERACTIVE_FORMS -> "InteractiveForms"
+                INDIVIDUAL_FORM -> "InteractiveForms"
             }
             return description
         }

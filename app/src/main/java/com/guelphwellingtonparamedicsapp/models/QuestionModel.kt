@@ -1,4 +1,11 @@
 package com.guelphwellingtonparamedicsapp.models
 
-class QuestionModel {
+class QuestionModel(
+    var id: Int,
+    var type: String,
+    var title: String,
+    var content: ContentModel?,
+    var skippedForScoring: Boolean
+) {
+
 }

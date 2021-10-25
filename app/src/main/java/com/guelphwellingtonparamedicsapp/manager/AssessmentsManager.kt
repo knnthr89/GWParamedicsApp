@@ -2,8 +2,13 @@ package com.guelphwellingtonparamedicsapp.manager
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.widget.Toast
 import com.google.gson.Gson
+import com.google.gson.JsonArray
+import com.google.gson.JsonObject
+import com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment
 import com.guelphwellingtonparamedicsapp.models.AssessmentModel
+import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 import com.guelphwellingtonparamedicsapp.utils.Communication
 import com.guelphwellingtonparamedicsapp.utils.Communication.CommunicationListener
@@ -15,6 +20,12 @@ import org.json.JSONObject
 class AssessmentsManager (var context: Context) : CommunicationListener {
 
     private var interactiveFormsListener : InteractiveFormsListener? = null
+    private var individualFormListener : IndividualFormListener? = null
+
+    interface IndividualFormListener {
+        fun onIndividualFormSuccess(individualFormModel: IndividualFormModel)
+        fun onIndividualFormFail(message: String, code: Int?)
+    }
 
     interface InteractiveFormsListener {
         fun onInteractiveFormsSuccess(interactiveFormsList : ArrayList<InteractiveFormModel>)
@@ -25,16 +36,29 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         this.interactiveFormsListener = listener
     }
 
+    fun setIndividualFormListener(listener: IndividualFormListener){
+        this.individualFormListener = listener
+    }
+
     fun getInteractiveForms(){
         val communication = Communication(context)
         communication.setCommunicationListener(this)
         communication.getJSON(path = CommunicationPath.INTERACTIVE_FORMS)
     }
 
+    fun getUniqueInteractiveForm(id : Int){
+        val communication = Communication(context)
+        communication.setCommunicationListener(this)
+        communication.getJSON(path = CommunicationPath.INDIVIDUAL_FORM,id = id)
+    }
+
     override fun onCommunicationSuccess(path: CommunicationPath, response: JSONObject?) {
         when (path) {
             CommunicationPath.INTERACTIVE_FORMS -> {
                 processInteractiveForms(response!!)
+            }
+            CommunicationPath.INDIVIDUAL_FORM -> {
+                processIndividualForm(response!!)
             }
         }
     }
@@ -44,6 +68,9 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
             CommunicationPath.INTERACTIVE_FORMS -> {
                 interactiveFormsListener?.onInteractiveFormsFail(error,code)
             }
+            CommunicationPath.INDIVIDUAL_FORM -> {
+                individualFormListener?.onIndividualFormFail(error, code)
+            }
         }
     }
 
@@ -51,6 +78,8 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         val gson = Gson()
         var arrayInteractiveForms : ArrayList<InteractiveFormModel> = ArrayList()
         var jsonArray= json.getJSONArray("data")
+
+        System.err.println(json)
 
         for (i in 0 until jsonArray.length()) {
             val o: JSONObject = jsonArray.getJSONObject(i)
@@ -61,6 +90,13 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
             arrayInteractiveForms.add(objModel)
         }
         interactiveFormsListener?.onInteractiveFormsSuccess(arrayInteractiveForms)
+    }
+
+    fun processIndividualForm(json : JSONObject){
+        System.err.println(json)
+        val gson = Gson()
+        val form = gson.fromJson(json.toString(), IndividualFormModel::class.java)
+        individualFormListener?.onIndividualFormSuccess(form)
     }
 
     companion object {

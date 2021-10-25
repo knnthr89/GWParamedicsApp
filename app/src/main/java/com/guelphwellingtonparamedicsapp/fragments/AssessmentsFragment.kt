@@ -2,25 +2,26 @@ package com.guelphwellingtonparamedicsapp.fragments
 
 import android.os.Bundle
 import android.util.Log
-import android.util.Log.e
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.volley.Response.error
-import com.android.volley.VolleyLog.e
+import com.guelphwellingtonparamedicsapp.BottomNavigationActivity
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.InteractiveFormsAdapter
+import com.guelphwellingtonparamedicsapp.adapters.InteractiveFormsAdapter.SelectedInteractiveForm
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
+import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.IndividualFormListener
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.InteractiveFormsListener
-import com.guelphwellingtonparamedicsapp.models.AssessmentModel
+import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
-import java.io.Console
 
-class AssessmentsFragment : Fragment(), InteractiveFormsListener {
+class AssessmentsFragment : Fragment(), InteractiveFormsListener, SelectedInteractiveForm, IndividualFormListener {
+
     private lateinit var interactiveRecycler : RecyclerView
 
     override fun onCreateView(
@@ -43,7 +44,7 @@ class AssessmentsFragment : Fragment(), InteractiveFormsListener {
 
     override fun onInteractiveFormsSuccess(interactiveFormsList : ArrayList<InteractiveFormModel>) {
         if(interactiveFormsList.isNotEmpty()){
-            val adapter = InteractiveFormsAdapter(requireContext(), interactiveFormsList)
+            val adapter = InteractiveFormsAdapter(requireContext(), interactiveFormsList, this)
             var mLayoutManager = LinearLayoutManager(requireContext())
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             interactiveRecycler.layoutManager = mLayoutManager
@@ -56,4 +57,19 @@ class AssessmentsFragment : Fragment(), InteractiveFormsListener {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun selected(id: Int) {
+        AssessmentsManager.getInstance(requireContext()).setIndividualFormListener(this)
+        AssessmentsManager.getInstance(requireContext()).getUniqueInteractiveForm(id)
+
+    }
+
+    override fun onIndividualFormSuccess(individualFormModel: IndividualFormModel) {
+        if(individualFormModel != null){
+                (activity as BottomNavigationActivity).showFragment(IndividualFormFragment())
+        }
+    }
+
+    override fun onIndividualFormFail(message: String, code: Int?) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
 }
