@@ -1,18 +1,16 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
 import android.content.Context
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ListView
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.enums.AnswersEnum
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 
 
@@ -59,6 +57,11 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                     holder.recyclerviewAnswers.adapter = adapter
                 }
             }
+            AnswersEnum.FILL_IN.path -> {
+                holder.timeScoreEt.visibility = View.VISIBLE
+                holder.descriptionTv.visibility = View.VISIBLE
+                holder.descriptionTv.text = Html.fromHtml(question.content?.description)
+            }
         }
     }
 
@@ -67,8 +70,10 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
-        var questionTv : TextView = v.findViewById(R.id.questionTv)
-        var booleanAnswer : RadioGroup = v.findViewById(R.id.booleanAnswer)
-        var recyclerviewAnswers : RecyclerView = v.findViewById(R.id.recyclerviewAnswers)
+        val questionTv : TextView = v.findViewById(R.id.questionTv)
+        val booleanAnswer : RadioGroup = v.findViewById(R.id.booleanAnswer)
+        val recyclerviewAnswers : RecyclerView = v.findViewById(R.id.recyclerviewAnswers)
+        val timeScoreEt : EditText = v.findViewById(R.id.timeScoreEt)
+        val descriptionTv : TextView = v.findViewById(R.id.descriptionTv)
     }
 }

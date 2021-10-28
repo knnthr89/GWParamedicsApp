@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.RelativeLayout
+import androidx.core.view.setPadding
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
 
@@ -29,7 +32,12 @@ class AnswersAdapter() : RecyclerView.Adapter<AnswersAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val answer = answers[position]
 
-        holder.checkboxItem.text = answer
+        holder.checkboxItem.text = answer.capitalize()
+
+        if(answers.size == position + 1){
+            holder.lineView.visibility = View.GONE
+            holder.relative.updatePadding(0,0,0,5)
+        }
 
     }
 
@@ -38,6 +46,8 @@ class AnswersAdapter() : RecyclerView.Adapter<AnswersAdapter.ViewHolder>() {
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
-        var checkboxItem : CheckBox = v.findViewById(R.id.checkboxItem)
+        val checkboxItem : CheckBox = v.findViewById(R.id.checkboxItem)
+        val lineView : View = v.findViewById(R.id.lineView)
+        var relative : RelativeLayout = v.findViewById(R.id.relative)
     }
 }

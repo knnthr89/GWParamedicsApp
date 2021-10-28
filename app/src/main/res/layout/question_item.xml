@@ -1,49 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/logo_splash_screen"
-    app:cardElevation="@dimen/margin_8"
-    app:cardCornerRadius="@dimen/margin_5">
+    app:cardCornerRadius="@dimen/margin_5"
+    app:cardElevation="@dimen/margin_8">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/questionTv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/mustard"
-        android:padding="@dimen/margin_10" />
+        <TextView
+            android:id="@+id/descriptionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_margin="@dimen/logo_splash_screen"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/mustard">
+
+            <TextView
+                android:id="@+id/questionTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_10"
+                android:layout_weight="1"
+                android:layout_gravity="center"/>
+
+            <EditText
+                android:id="@+id/timeScoreEt"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/edittext_40dp"
+                android:layout_weight="1"
+                android:background="@drawable/box_border_gray"
+                android:layout_margin="@dimen/margin_5"
+                android:padding="@dimen/margin_5"
+                android:visibility="gone"
+                android:maxEms="5"/>
+
+        </LinearLayout>
 
         <RadioGroup
             android:id="@+id/booleanAnswer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:padding="@dimen/margin_10">
+            android:padding="@dimen/margin_10"
+            android:visibility="gone">
 
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/yes_option"
-                android:layoutDirection="rtl"/>
+                android:layoutDirection="rtl"
+                android:text="@string/yes_option" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="@color/button_gray"
                 android:layout_marginTop="@dimen/margin_5"
-                android:layout_marginBottom="@dimen/margin_5"/>
+                android:layout_marginBottom="@dimen/margin_5"
+                android:background="@color/button_gray" />
 
             <RadioButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/no_option"
-                android:layoutDirection="rtl"/>
+                android:layoutDirection="rtl"
+                android:text="@string/no_option" />
 
         </RadioGroup>
 
@@ -51,7 +78,7 @@
             android:id="@+id/recyclerviewAnswers"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -54,7 +54,6 @@ class IndividualFormFragment : Fragment() {
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             formQuestionsRv.layoutManager = mLayoutManager
             formQuestionsRv.setHasFixedSize(true)
-            //formQuestionsRv.isNestedScrollingEnabled = true
             formQuestionsRv.adapter = adapter
         }
     }
