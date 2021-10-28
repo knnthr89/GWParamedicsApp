@@ -93,7 +93,7 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
     }
 
     fun processIndividualForm(json : JSONObject){
-        System.err.println(json)
+        System.err.println("information $json")
         val gson = Gson()
         val form = gson.fromJson(json.toString(), IndividualFormModel::class.java)
         individualFormListener?.onIndividualFormSuccess(form)

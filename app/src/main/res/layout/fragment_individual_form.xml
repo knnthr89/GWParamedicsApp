@@ -1,14 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.IndividualFormFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_gray"
+    tools:context=".fragments.IndividualFormFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/logo_splash_screen"
+        app:cardCornerRadius="@dimen/margin_5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_8">
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/patientIdTi"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:labelFor="@+id/patientIdEt"
+                android:layout_margin="@dimen/margin_5">
+
+                <EditText
+                    android:id="@+id/patientIdEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_48dp"
+                    android:hint="@string/patient_id"
+                    android:inputType="text"
+                    android:background="@drawable/box_border_gray"
+                    android:padding="@dimen/margin_5"
+                    android:maxLength="16"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/paramedicsTi"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:labelFor="@+id/patientIdEt"
+                android:layout_margin="@dimen/margin_5">
+
+                <EditText
+                    android:id="@+id/paramedicsEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_48dp"
+                    android:hint="@string/paramedics"
+                    android:inputType="text"
+                    android:background="@drawable/box_border_gray"
+                    android:padding="@dimen/margin_5"
+                    android:maxLength="16"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dateTi"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:labelFor="@+id/dateEt"
+                android:layout_margin="@dimen/margin_5">
+
+                <EditText
+                    android:id="@+id/dateEt"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/edittext_48dp"
+                    android:hint="@string/date"
+                    android:inputType="date"
+                    android:background="@drawable/box_border_gray"
+                    android:padding="@dimen/margin_5"
+                    android:maxLength="10"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/formQuestionsRv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_marginBottom="@dimen/margin_navigation_bottom"
+        android:overScrollMode="never"/>
 
-</FrameLayout>
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

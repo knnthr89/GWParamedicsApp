@@ -65,7 +65,7 @@ class AssessmentsFragment : Fragment(), InteractiveFormsListener, SelectedIntera
 
     override fun onIndividualFormSuccess(individualFormModel: IndividualFormModel) {
         if(individualFormModel != null){
-                (activity as BottomNavigationActivity).showFragment(IndividualFormFragment())
+                (activity as BottomNavigationActivity).showFragment(IndividualFormFragment(), individualFormModel = individualFormModel)
         }
     }
 

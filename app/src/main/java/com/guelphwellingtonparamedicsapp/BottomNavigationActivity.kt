@@ -11,6 +11,7 @@ import com.google.android.material.navigation.NavigationView
 import com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ContactsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ResourcesFragment
+import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 
 class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
     NavigationView.OnNavigationItemSelectedListener {
@@ -26,10 +27,13 @@ class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNav
         bottomNavigationView.selectedItemId = R.id.navigation_assessments
     }
 
-    fun showFragment(fragment: Fragment, addToStack: Boolean = true) {
+    fun showFragment(fragment: Fragment, addToStack: Boolean = true, individualFormModel: IndividualFormModel? = null) {
         try {
+            val args = Bundle()
+            args.putSerializable("individualForm", individualFormModel)
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            fragment.arguments = args
             transaction.replace(R.id.nav_host_fragment_activity_bottom_navigation, fragment)
 
             if (addToStack) {
