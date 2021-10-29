@@ -1,5 +1,6 @@
 package com.guelphwellingtonparamedicsapp.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -13,6 +14,7 @@ import com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ContactsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ResourcesFragment
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
     NavigationView.OnNavigationItemSelectedListener {
@@ -26,6 +28,12 @@ class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNav
         bottomNavigationView = findViewById(R.id.nav_view)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
         bottomNavigationView.selectedItemId = R.id.navigation_assessments
+
+        if(!Utils.hasInternetConnection(context = this)){
+            val intent = Intent(this, OfflineActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            this.startActivity(intent)
+        }
     }
 
     fun showFragment(fragment: Fragment, addToStack: Boolean = true, individualFormModel: IndividualFormModel? = null) {

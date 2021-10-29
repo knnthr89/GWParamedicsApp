@@ -12,14 +12,14 @@
     <string name="title_resources">Resources</string>
     <string name="title_contacts">Contacts</string>
 
-    <string name="volley_auth_failure_error"></string>
-    <string name="volley_no_connection_error"></string>
-    <string name="volley_timeout_error"></string>
-    <string name="volley_server_error"></string>
-    <string name="volley_parse_error"></string>
-    <string name="volley_network_error"></string>
-    <string name="volley_unknown_error"></string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="volley_auth_failure_error">The user or password is incorrect.</string>
+    <string name="volley_no_connection_error">The server is temporarily down for maintenance. \n\nTry again later.</string>
+    <string name="volley_timeout_error">The server is temporarily down for maintenance. \n\nTry again later.</string>
+    <string name="volley_server_error">The request could not be processed on the server. \n\nTry again later.</string>
+    <string name="volley_parse_error">The server response could not be interpreted. \n\nTry again later.</string>
+    <string name="volley_network_error">The network connection has some faults. \n\nTry connecting to another network.</string>
+    <string name="volley_unknown_error">The request could not be sent to the server to be processed.</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="yes_option">Yes</string>
     <string name="no_option">No</string>
@@ -27,5 +27,8 @@
     <string name="patient_id">Patient ID</string>
     <string name="paramedics">Paramedics</string>
     <string name="date">Date</string>
+    <string name="ups">Ups!</string>
+    <string name="no_internet_connection">There is no Internet connection. \nPlease check your connection</string>
+    <string name="common_retry">Retry</string>
 
 </resources>

@@ -3,23 +3,25 @@
     package="com.guelphwellingtonparamedicsapp">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".utils.AppController"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@drawable/gwp_logo"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".activities.OfflineActivity"
+            android:exported="true" />
         <activity
             android:name=".activities.BottomNavigationActivity"
             android:exported="true"
-            android:label="@string/title_activity_bottom_navigation">
-        </activity>
+            android:label="@string/title_activity_bottom_navigation"></activity>
         <activity
             android:name=".activities.SplashActivity"
             android:exported="true"
@@ -34,4 +36,5 @@
             android:name=".activities.LoginActivity"
             android:exported="true" />
     </application>
+
 </manifest>
