@@ -1,16 +1,14 @@
 package com.guelphwellingtonparamedicsapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.guelphwellingtonparamedicsapp.BottomNavigationActivity
+import com.guelphwellingtonparamedicsapp.activities.BottomNavigationActivity
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.InteractiveFormsAdapter
 import com.guelphwellingtonparamedicsapp.adapters.InteractiveFormsAdapter.SelectedInteractiveForm

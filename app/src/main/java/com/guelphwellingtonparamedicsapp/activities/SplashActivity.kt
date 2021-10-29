@@ -1,8 +1,9 @@
-package com.guelphwellingtonparamedicsapp
+package com.guelphwellingtonparamedicsapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.guelphwellingtonparamedicsapp.R
 import java.lang.Thread.sleep
 
 class SplashActivity : AppCompatActivity() {

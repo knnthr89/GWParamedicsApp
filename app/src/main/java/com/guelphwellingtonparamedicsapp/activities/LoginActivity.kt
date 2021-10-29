@@ -1,9 +1,10 @@
-package com.guelphwellingtonparamedicsapp
+package com.guelphwellingtonparamedicsapp.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.guelphwellingtonparamedicsapp.R
 
 class LoginActivity : AppCompatActivity() {
     lateinit var signinButton : Button

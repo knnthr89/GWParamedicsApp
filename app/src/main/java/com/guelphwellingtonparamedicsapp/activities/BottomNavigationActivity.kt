@@ -1,4 +1,4 @@
-package com.guelphwellingtonparamedicsapp
+package com.guelphwellingtonparamedicsapp.activities
 
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
+import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ContactsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ResourcesFragment

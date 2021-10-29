@@ -16,9 +16,12 @@
         <entry key="..\:/Users/kenm_/AndroidStudioProjects/GuelphWellingtonParamedicsApp/app/src/main/res/layout/interactive_form_item.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/kenm_/AndroidStudioProjects/GuelphWellingtonParamedicsApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.203125" />
         <entry key="..\:/Users/kenm_/AndroidStudioProjects/GuelphWellingtonParamedicsApp/app/src/main/res/xml/network_security_config.xml" value="0.103125" />
+        <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/answer_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_individual_form.xml" value="0.18432971014492755" />
         <entry key="app/src/main/res/layout/question_item.xml" value="0.14764492753623187" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.18802083333333333" />
       </map>
     </option>
   </component>
