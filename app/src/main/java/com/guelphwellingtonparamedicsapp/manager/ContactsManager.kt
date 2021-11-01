@@ -46,7 +46,6 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
     }
 
     private fun processContactGroups(json: JSONObject) {
-        print(json)
         contactsGroupsListener?.onContactsGroupsSuccess(json.toString())
     }
 
@@ -60,10 +59,5 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
                 mInstance = ContactsManager(context)
             return mInstance!!
         }
-    }
-
-    @Throws(JSONException::class)
-    fun toJsonObject(jsonString: String): JSONObject {
-        return JSONObject(jsonString)
     }
 }

@@ -12,7 +12,7 @@ import com.guelphwellingtonparamedicsapp.R
 class Communication(var context: Context?) {
 
     companion object {
-        var SERVER = "http://b785-2607-fea8-1be0-1bcb-1cc7-6f3e-8de6-26a0.ngrok.io/"
+        var SERVER = "http://c697-2607-fea8-1be0-1bcb-d87b-cca3-b620-cfce.ngrok.io/"
     }
 
     private var communicationListener: CommunicationListener? = null
@@ -22,10 +22,14 @@ class Communication(var context: Context?) {
         fun onCommunicationError(path: CommunicationPath, error: String, code: Int?)
     }
 
-    fun getJSON(path: CommunicationPath, eParams: HashMap<String, String> = HashMap(), id : Int? = null) {
+    fun getJSON(
+        path: CommunicationPath,
+        eParams: HashMap<String, String> = HashMap(),
+        id: Int? = null
+    ) {
         val responseListener = Response.Listener<String> { response ->
             if (response.isNotBlank()) {
-                when(path){
+                when (path) {
                     CommunicationPath.CONTACT_GROUPS -> {
                         val res = JSONArray(response)
                         val obj = JSONObject()
@@ -34,9 +38,9 @@ class Communication(var context: Context?) {
                     }
                     CommunicationPath.INTERACTIVE_FORMS -> {
                         val res = JSONArray(response)
-                            val obj = JSONObject()
-                            obj.put("data", res)
-                            communicationListener?.onCommunicationSuccess(path, obj)
+                        val obj = JSONObject()
+                        obj.put("data", res)
+                        communicationListener?.onCommunicationSuccess(path, obj)
                     }
                     else -> {
                         val res = JSONObject(response)
@@ -49,20 +53,28 @@ class Communication(var context: Context?) {
 
         val errorListener = Response.ErrorListener { error ->
             val message: String?
-            if (error is TimeoutError) {
-                message = context?.getString(R.string.volley_timeout_error)
-            } else if (error is NoConnectionError) {
-                message = context?.getString(R.string.volley_no_connection_error)
-            } else if (error is AuthFailureError) {
-                message = context?.getString(R.string.volley_auth_failure_error)
-            } else if (error is ServerError) {
-                message = context?.getString(R.string.volley_server_error)
-            } else if (error is NetworkError) {
-                message = context?.getString(R.string.volley_network_error)
-            } else if (error is ParseError) {
-                message = context?.getString(R.string.volley_parse_error)
-            } else {
-                message = context?.getString(R.string.volley_unknown_error)
+            when (error) {
+                is TimeoutError -> {
+                    message = context?.getString(R.string.volley_timeout_error)
+                }
+                is NoConnectionError -> {
+                    message = context?.getString(R.string.volley_no_connection_error)
+                }
+                is AuthFailureError -> {
+                    message = context?.getString(R.string.volley_auth_failure_error)
+                }
+                is ServerError -> {
+                    message = context?.getString(R.string.volley_server_error)
+                }
+                is NetworkError -> {
+                    message = context?.getString(R.string.volley_network_error)
+                }
+                is ParseError -> {
+                    message = context?.getString(R.string.volley_parse_error)
+                }
+                else -> {
+                    message = context?.getString(R.string.volley_unknown_error)
+                }
             }
 
             val code = error.networkResponse?.statusCode ?: 503
@@ -70,7 +82,11 @@ class Communication(var context: Context?) {
 
         }
 
-        var webServices = if(id == null) {"$SERVER${path.path}"}else{"$SERVER${path.path}/$id"}
+        var webServices = if (id == null) {
+            "$SERVER${path.path}"
+        } else {
+            "$SERVER${path.path}/$id"
+        }
 
         for ((key, value) in eParams) {
             webServices += "$key=$value&"
@@ -87,12 +103,101 @@ class Communication(var context: Context?) {
         req.retryPolicy = DefaultRetryPolicy(
             20000,
             0,
-            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT)
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
         AppController.instance!!.addToRequestQueue(req)
 
     }
 
-    fun setCommunicationListener(communicationListener: CommunicationListener){
+    fun postJSON(
+        path: CommunicationPath,
+        bodyData: String = "",
+        eParams: HashMap<String, String> = HashMap(), id: Int? = null
+    ) {
+        val responseListener = Response.Listener<String> { response ->
+            if (response.isNotBlank()) {
+                when (path) {
+                    else -> {
+                        val res = JSONObject(response)
+                        communicationListener?.onCommunicationSuccess(path, res)
+                    }
+                }
+
+            }
+        }
+
+        val errorListener = Response.ErrorListener { error ->
+            val message: String?
+            when (error) {
+                is TimeoutError -> {
+                    message = context?.getString(R.string.volley_timeout_error)
+                }
+                is NoConnectionError -> {
+                    message = context?.getString(R.string.volley_no_connection_error)
+                }
+                is AuthFailureError -> {
+                    message = context?.getString(R.string.volley_auth_failure_error)
+                }
+                is ServerError -> {
+                    message = context?.getString(R.string.volley_server_error)
+                }
+                is NetworkError -> {
+                    message = context?.getString(R.string.volley_network_error)
+                }
+                is ParseError -> {
+                    message = context?.getString(R.string.volley_parse_error)
+                }
+                else -> {
+                    message = context?.getString(R.string.volley_unknown_error)
+                }
+            }
+
+            val code = error.networkResponse?.statusCode ?: 503
+            communicationListener?.onCommunicationError(path, message!!, code)
+
+        }
+
+        var webServices = if (id == null) {
+            "$SERVER${path.path}"
+        } else {
+            "$SERVER${path.path}/$id"
+        }
+
+        for ((key, value) in eParams) {
+            webServices += "$key=$value&"
+        }
+        val req = object :
+            StringRequest(Method.POST, webServices, responseListener, errorListener) {
+            @Throws(AuthFailureError::class)
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["content-type"] = "application/json"
+                return headers
+            }
+
+
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                for ((key, value) in eParams) {
+                    params[key] = value
+                }
+                return params
+            }
+
+            override fun getBody(): ByteArray {
+                return bodyData.toByteArray()
+            }
+        }
+        req.retryPolicy = DefaultRetryPolicy(
+            20000,
+            0,
+            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT
+        )
+        AppController.instance!!.addToRequestQueue(req)
+
+    }
+
+    fun setCommunicationListener(communicationListener: CommunicationListener) {
         this.communicationListener = communicationListener
     }
 }
