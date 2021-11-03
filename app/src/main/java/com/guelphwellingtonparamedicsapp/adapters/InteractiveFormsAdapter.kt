@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -45,6 +46,12 @@ class InteractiveFormsAdapter() : RecyclerView.Adapter<InteractiveFormsAdapter.V
         holder.itemView.setOnClickListener {
             listener?.selected(interactiveForm.id)
         }
+
+        holder.imageButton.setOnClickListener {
+            listener?.selected(interactiveForm.id)
+        }
+
+
     }
 
     override fun getItemCount(): Int {
@@ -53,5 +60,6 @@ class InteractiveFormsAdapter() : RecyclerView.Adapter<InteractiveFormsAdapter.V
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
        var titleTextView : TextView = v.findViewById(R.id.titleTextView)
+        var imageButton : ImageButton = v.findViewById(R.id.imageButton)
     }
 }

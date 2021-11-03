@@ -1,9 +1,17 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+ext {
+    roomVersion = '2.+'
+    lifecycleVersion = '1.1.1'
+    fragmentVersion = '1.3.2'
+    gifVersion = '1.2.22'
+}
+
 buildscript {
 
-        repositories {
-            google()
-            mavenCentral()
+    repositories {
+        google()
+        jcenter()
+        maven { url 'https://jitpack.io' }
         }
 
     dependencies {
@@ -12,6 +20,10 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+    }
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
     }
 }
 

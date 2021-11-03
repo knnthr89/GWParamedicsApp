@@ -30,7 +30,7 @@ class IndividualFormFragment : Fragment() {
 
         val bundle = this.arguments
         if (bundle != null) {
-            if (bundle.containsKey("individualForm")) {
+            if (bundle.containsKey("individualForm") && bundle.getSerializable("individualForm") != null) {
                 form = bundle.getSerializable("individualForm") as IndividualFormModel
             }
             if(form != null){

@@ -10,13 +10,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
 import com.guelphwellingtonparamedicsapp.R
+import com.guelphwellingtonparamedicsapp.database.AppDatabase
 import com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ContactsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ResourcesFragment
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.utils.Utils
 
-class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNavigationItemSelectedListener,
+class BottomNavigationActivity : AppCompatActivity(),
+    BottomNavigationView.OnNavigationItemSelectedListener,
     NavigationView.OnNavigationItemSelectedListener {
 
     private lateinit var bottomNavigationView: BottomNavigationView
@@ -29,14 +31,18 @@ class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNav
         bottomNavigationView.setOnNavigationItemSelectedListener(this)
         bottomNavigationView.selectedItemId = R.id.navigation_assessments
 
-        if(!Utils.hasInternetConnection(context = this)){
+        if (!Utils.hasInternetConnection(context = this)) {
             val intent = Intent(this, OfflineActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             this.startActivity(intent)
         }
     }
 
-    fun showFragment(fragment: Fragment, addToStack: Boolean = true, individualFormModel: IndividualFormModel? = null) {
+    fun showFragment(
+        fragment: Fragment,
+        addToStack: Boolean = true,
+        individualFormModel: IndividualFormModel? = null
+    ) {
         try {
             val args = Bundle()
             args.putSerializable("individualForm", individualFormModel)
@@ -69,4 +75,25 @@ class BottomNavigationActivity : AppCompatActivity(), BottomNavigationView.OnNav
         }
         return true
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        AppDatabase.databaseWriteExecutor.execute {
+            val db = AppDatabase.getDatabase(this.application)
+            var userDao = db!!.userDao()
+            var user = userDao.getUser()
+
+            if(user.isNotEmpty()) {
+                for(u in user){
+                    Log.e("user", u.token.toString())
+                }
+            }else{
+                Log.e("user list", "empty")
+            }
+        }
+
+
+
     }
+}

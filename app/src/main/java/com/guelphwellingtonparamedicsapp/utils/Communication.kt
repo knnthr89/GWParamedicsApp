@@ -12,7 +12,8 @@ import com.guelphwellingtonparamedicsapp.R
 class Communication(var context: Context?) {
 
     companion object {
-        var SERVER = "http://c697-2607-fea8-1be0-1bcb-d87b-cca3-b620-cfce.ngrok.io/"
+        var SERVER = "http://10.0.2.2:5000/"
+        //var SERVER = "http://4fb6-2607-fea8-1be0-1bcb-d87b-cca3-b620-cfce.ngrok.io/"
     }
 
     private var communicationListener: CommunicationListener? = null

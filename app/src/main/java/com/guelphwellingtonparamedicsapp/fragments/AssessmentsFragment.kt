@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.activities.BottomNavigationActivity
@@ -44,9 +45,7 @@ class AssessmentsFragment : Fragment(), InteractiveFormsListener, SelectedIntera
         if(interactiveFormsList.isNotEmpty()){
             val adapter = InteractiveFormsAdapter(requireContext(), interactiveFormsList, this)
             var mLayoutManager = LinearLayoutManager(requireContext())
-            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             interactiveRecycler.layoutManager = mLayoutManager
-            interactiveRecycler.setHasFixedSize(true)
             interactiveRecycler.adapter = adapter
         }
     }

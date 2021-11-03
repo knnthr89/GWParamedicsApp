@@ -11,7 +11,7 @@ class SessionManager(var context: Context) : Communication.CommunicationListener
     private var loginListener: LoginListener? = null
 
     interface LoginListener {
-        fun onLoginSuccess()
+        fun onLoginSuccess(token : String)
         fun onLoginFail(message: String, code: Int?)
     }
 
@@ -48,7 +48,7 @@ class SessionManager(var context: Context) : Communication.CommunicationListener
     private fun processLogin(json : JSONObject){
         if (json.has("token")) {
             val token = json.getString("token")
-            loginListener?.onLoginSuccess()
+            loginListener?.onLoginSuccess(token = token)
         }else{
             loginListener?.onLoginFail("JSON does not include user's token.", 201)
         }
