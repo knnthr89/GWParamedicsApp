@@ -79,14 +79,13 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         var arrayInteractiveForms : ArrayList<InteractiveFormModel> = ArrayList()
         var jsonArray= json.getJSONArray("data")
 
-        System.err.println(json)
-
         for (i in 0 until jsonArray.length()) {
             val o: JSONObject = jsonArray.getJSONObject(i)
             val objModel : InteractiveFormModel = gson.fromJson(
                 o.toString(),
                 InteractiveFormModel::class.java
             )
+
             arrayInteractiveForms.add(objModel)
         }
         interactiveFormsListener?.onInteractiveFormsSuccess(arrayInteractiveForms)

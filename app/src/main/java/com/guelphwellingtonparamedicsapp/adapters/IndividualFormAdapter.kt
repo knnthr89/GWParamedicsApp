@@ -2,6 +2,7 @@ package com.guelphwellingtonparamedicsapp.adapters
 
 import android.content.Context
 import android.text.Html
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +10,12 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.enums.AnswersEnum
-import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
 import androidx.recyclerview.widget.LinearLayoutManager
+import android.widget.RadioButton
+
+import android.widget.RadioGroup
+import androidx.core.view.marginLeft
 
 
 class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
@@ -19,9 +23,16 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
     private lateinit var questions: ArrayList<QuestionModel>
     private lateinit var answers : ArrayList<String>
 
-    constructor(context: Context, questions : ArrayList<QuestionModel>) : this() {
+    private var listener : SelectedAnswer? = null
+
+    interface SelectedAnswer {
+        fun selected(answer : Boolean)
+    }
+
+    constructor(context: Context, questions : ArrayList<QuestionModel>, listener : SelectedAnswer) : this() {
         this.context = context
         this.questions = questions
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(
@@ -36,6 +47,26 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
         val question = questions[position]
 
         holder.questionTv.text = question.title
+
+        if(!question.showIt){
+            holder.itemView.visibility = View.GONE
+            holder.itemView.layoutParams = RecyclerView.LayoutParams(0,0)
+        }else{
+            holder.itemView.visibility = View.VISIBLE
+            holder.itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
+            holder.itemView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            val layoutParams = (holder.itemView?.layoutParams as? ViewGroup.MarginLayoutParams)
+            layoutParams?.setMargins(40, 40, 40, 40)
+            holder.itemView.layoutParams = layoutParams
+        }
+
+        holder.booleanAnswer.setOnCheckedChangeListener { group, checkedId ->
+            if(holder.rbYes.id == checkedId){
+                listener!!.selected(true)
+            }else if(holder.rbNo.id == checkedId){
+                listener!!.selected(false)
+            }
+        }
 
         when(question.type){
             AnswersEnum.TF.path -> {
@@ -75,5 +106,7 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
         val recyclerviewAnswers : RecyclerView = v.findViewById(R.id.recyclerviewAnswers)
         val timeScoreEt : EditText = v.findViewById(R.id.timeScoreEt)
         val descriptionTv : TextView = v.findViewById(R.id.descriptionTv)
+        val rbYes : RadioButton = v.findViewById(R.id.rbYes)
+        var rbNo : RadioButton = v.findViewById(R.id.rbNo)
     }
 }

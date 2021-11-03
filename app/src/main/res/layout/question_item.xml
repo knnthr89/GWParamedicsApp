@@ -54,6 +54,7 @@
             android:visibility="gone">
 
             <RadioButton
+                android:id="@+id/rbYes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"
@@ -67,6 +68,7 @@
                 android:background="@color/button_gray" />
 
             <RadioButton
+                android:id="@+id/rbNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layoutDirection="rtl"

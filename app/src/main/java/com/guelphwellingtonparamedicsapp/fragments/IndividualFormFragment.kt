@@ -10,14 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter
+import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter.SelectedAnswer
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
-import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
 
-class IndividualFormFragment : Fragment() {
+class IndividualFormFragment : Fragment(), SelectedAnswer {
 
     lateinit var form : IndividualFormModel
     lateinit var formQuestionsRv : RecyclerView
+    private var questions: ArrayList<QuestionModel> = ArrayList()
+    private var adapter : IndividualFormAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,19 +45,39 @@ class IndividualFormFragment : Fragment() {
 
     fun fillRecyclerView(individualFormModel: IndividualFormModel) {
         if (individualFormModel != null) {
-            var questions: ArrayList<QuestionModel> = ArrayList()
+            questions.clear()
             for (i in individualFormModel.sections) {
                 for (y in i.questions) {
+                    y.showIt = true
                     questions.add(y)
                 }
             }
-            val adapter = IndividualFormAdapter(requireContext(), questions)
+            adapter = IndividualFormAdapter(requireContext(), questions, this)
             var mLayoutManager = LinearLayoutManager(requireContext())
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             formQuestionsRv.layoutManager = mLayoutManager
             formQuestionsRv.setHasFixedSize(true)
             formQuestionsRv.adapter = adapter
         }
+    }
+
+    override fun selected(answer: Boolean) {
+       if(answer){
+           val q2 = questions[1]
+           q2.showIt = false
+           val q3 = questions[2]
+           q3.showIt = true
+           val q4 = questions[3]
+           q4.showIt = true
+       }else{
+           val q2 = questions[1]
+           q2.showIt = true
+           val q3 = questions[2]
+           q3.showIt = false
+           val q4 = questions[3]
+           q4.showIt = false
+       }
+        adapter?.notifyDataSetChanged()
     }
 
 }
