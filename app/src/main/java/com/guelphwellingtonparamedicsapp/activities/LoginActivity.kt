@@ -51,6 +51,8 @@ class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
 
     override fun onLoginSuccess(token: String) {
 
+        Log.e("token", token)
+
         AppDatabase.databaseWriteExecutor.execute {
 
             val db = AppDatabase.getDatabase(this.application)

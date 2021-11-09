@@ -69,4 +69,5 @@ dependencies {
     implementation  "android.arch.lifecycle:extensions:$rootProject.lifecycleVersion"
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.lifecycleVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
+    implementation "org.jetbrains.anko:anko:$rootProject.ankoVersion"
 }

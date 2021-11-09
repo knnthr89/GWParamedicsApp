@@ -8,12 +8,16 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.net.CacheResponse
 import com.guelphwellingtonparamedicsapp.R
+import com.guelphwellingtonparamedicsapp.daos.UserDao
 
 class Communication(var context: Context?) {
 
+    private var mUserDao: UserDao? = null
+
     companion object {
-        var SERVER = "http://10.0.2.2:5000/"
-        //var SERVER = "http://4fb6-2607-fea8-1be0-1bcb-d87b-cca3-b620-cfce.ngrok.io/"
+        //var SERVER = "http://10.0.2.2:5000/"
+        var SERVER = "http://1b68-2607-fea8-1be0-1bcb-514e-55cb-3a02-516.ngrok.io/"
+        var TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijk3MGExMjA5LTg4ZjAtNDAxOS04Mzk1LTBkZmFmNjVmNTA1MCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGd1ZWxwaC5jYSIsImp0aSI6IjkyOTQ4ZGI1LTNiMWItNGI4MC1hNjA5LTVhMDU3ZDFlYjZjZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNjM2NjY2ODI3LCJpc3MiOiJQYXJhbWVkaWNBUEkiLCJhdWQiOiJQYXJhbWVkaWNBUEkifQ.oe56QpM9gl1RHEwvKZgDi3_lqN3RfC0oGg_f-aPmRHE"
     }
 
     private var communicationListener: CommunicationListener? = null
@@ -32,9 +36,8 @@ class Communication(var context: Context?) {
             if (response.isNotBlank()) {
                 when (path) {
                     CommunicationPath.CONTACT_GROUPS -> {
-                        val res = JSONArray(response)
                         val obj = JSONObject()
-                        obj.put("data", res)
+                        obj.put("data", response)
                         communicationListener?.onCommunicationSuccess(path, obj)
                     }
                     CommunicationPath.INTERACTIVE_FORMS -> {
@@ -116,19 +119,24 @@ class Communication(var context: Context?) {
         eParams: HashMap<String, String> = HashMap(), id: Int? = null
     ) {
         val responseListener = Response.Listener<String> { response ->
-            if (response.isNotBlank()) {
-                when (path) {
+            when (path) {
+                    CommunicationPath.ASSESSMENTS -> {
+                        val jsonObject = JSONObject()
+                        jsonObject.put("message", "The patient's evaluation was successfully saved on the server.")
+                        val obj = JSONObject()
+                        obj.put("data", jsonObject)
+                        communicationListener?.onCommunicationSuccess(path, obj)
+                    }
                     else -> {
                         val res = JSONObject(response)
                         communicationListener?.onCommunicationSuccess(path, res)
                     }
-                }
-
             }
         }
 
         val errorListener = Response.ErrorListener { error ->
             val message: String?
+            Log.e("ENTRA", "error ${error.networkResponse.statusCode}")
             when (error) {
                 is TimeoutError -> {
                     message = context?.getString(R.string.volley_timeout_error)
@@ -173,6 +181,7 @@ class Communication(var context: Context?) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
                 headers["content-type"] = "application/json"
+                headers["Authorization"] = "Bearer $TOKEN"
                 return headers
             }
 

@@ -1,121 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/light_gray"
-    android:orientation="vertical"
-    tools:context=".fragments.IndividualFormFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:overScrollMode="never"
-        android:layout_marginBottom="@dimen/margin_navigation_bottom">
+        android:layout_height="match_parent"
+        android:background="@color/light_gray"
+        android:orientation="vertical"
+        tools:context=".fragments.IndividualFormFragment">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginBottom="@dimen/margin_navigation_bottom"
+            android:overScrollMode="never">
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/logo_splash_screen"
-                app:cardCornerRadius="@dimen/margin_5">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_8"
-                    android:orientation="vertical">
+                    android:layout_margin="@dimen/logo_splash_screen"
+                    app:cardCornerRadius="@dimen/margin_5">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/patientIdTi"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_margin="@dimen/margin_5"
-                        android:labelFor="@+id/patientIdEt">
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_8"
+                        android:orientation="vertical">
 
-                        <EditText
-                            android:id="@+id/patientIdEt"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/patientIdTi"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_40dp"
-                            android:background="@drawable/box_border_gray"
-                            android:hint="@string/patient_id"
-                            android:inputType="text"
-                            android:maxLength="16"
-                            android:nextFocusDown="@id/paramedicsEt"
-                            android:padding="@dimen/margin_5" />
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/margin_5"
+                            android:labelFor="@+id/patientIdEt">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <EditText
+                                android:id="@+id/patientIdEt"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_40dp"
+                                android:background="@drawable/box_border_gray"
+                                android:hint="@string/patient_id"
+                                android:inputType="text"
+                                android:maxLength="16"
+                                android:nextFocusDown="@id/paramedicsEt"
+                                android:padding="@dimen/margin_5" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/paramedicsTi"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_margin="@dimen/margin_5"
-                        android:labelFor="@+id/patientIdEt">
-
-                        <EditText
-                            android:id="@+id/paramedicsEt"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/paramedicsTi"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_40dp"
-                            android:background="@drawable/box_border_gray"
-                            android:hint="@string/paramedics"
-                            android:inputType="text"
-                            android:maxLength="16"
-                            android:nextFocusUp="@id/patientIdEt"
-                            android:nextFocusDown="@id/dateEt"
-                            android:padding="@dimen/margin_5" />
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/margin_5"
+                            android:labelFor="@+id/patientIdEt">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <EditText
+                                android:id="@+id/paramedicsEt"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_40dp"
+                                android:background="@drawable/box_border_gray"
+                                android:hint="@string/paramedics"
+                                android:inputType="text"
+                                android:maxLength="16"
+                                android:nextFocusUp="@id/patientIdEt"
+                                android:nextFocusDown="@id/dateEt"
+                                android:padding="@dimen/margin_5" />
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/dateTi"
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:layout_margin="@dimen/margin_5"
-                        android:labelFor="@+id/dateEt">
+                        </com.google.android.material.textfield.TextInputLayout>
 
-                        <EditText
-                            android:id="@+id/dateEt"
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:id="@+id/dateTi"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/edittext_40dp"
-                            android:background="@drawable/box_border_gray"
-                            android:hint="@string/date"
-                            android:inputType="date"
-                            android:maxLength="10"
-                            android:nextFocusUp="@id/paramedicsEt"
-                            android:padding="@dimen/margin_5" />
+                            android:layout_height="60dp"
+                            android:layout_margin="@dimen/margin_5"
+                            android:labelFor="@+id/dateEt">
 
-                    </com.google.android.material.textfield.TextInputLayout>
+                            <EditText
+                                android:id="@+id/dateEt"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/edittext_40dp"
+                                android:background="@drawable/box_border_gray"
+                                android:hint="@string/date"
+                                android:inputType="date"
+                                android:maxLength="10"
+                                android:nextFocusUp="@id/paramedicsEt"
+                                android:padding="@dimen/margin_5" />
 
-                </LinearLayout>
+                        </com.google.android.material.textfield.TextInputLayout>
 
-            </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/formQuestionsRv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never" />
+                </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/calculateBtn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Calculate and save"
-                android:layout_margin="@dimen/logo_splash_screen"
-                android:textAllCaps="false"
-                android:background="@color/teal_700"
-                android:textColor="@color/white"
-                />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/formQuestionsRv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/calculateBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/logo_splash_screen"
+                    android:background="@color/teal_700"
+                    android:text="Calculate and save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white" />
 
-    </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
 
-</LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+    </LinearLayout>
+</layout>
