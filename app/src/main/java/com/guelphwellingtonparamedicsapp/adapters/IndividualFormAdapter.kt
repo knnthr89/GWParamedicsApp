@@ -19,7 +19,12 @@ import java.util.HashMap
 import android.text.Editable
 
 import android.text.TextWatcher
+import android.view.Gravity
 import androidx.core.view.marginStart
+import android.widget.LinearLayout
+import androidx.core.text.isDigitsOnly
+import org.jetbrains.anko.backgroundColor
+import org.w3c.dom.Text
 
 
 class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>(), CheckboxAnswersAdapter.SelectMultipleAnswer{
@@ -87,6 +92,9 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                 holder.booleanAnswer.visibility = View.VISIBLE
             }
             AnswersEnum.MULTIPLE_SELECT.path -> {
+                holder.rateLy.visibility = View.VISIBLE
+                holder.descriptionRateTv.visibility = View.VISIBLE
+                holder.descriptionRateTv.text = question.content?.description
                 holder.recyclerviewAnswers.visibility = View.VISIBLE
                 answers = ArrayList()
                 if(question.content!!.items != null){
@@ -126,24 +134,54 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                 })
             }
             AnswersEnum.RATE.path -> {
-                holder.rateLy.visibility = View.VISIBLE
-                holder.recyclerviewAnswers.visibility = View.VISIBLE
-                holder.descriptionRateTv.text = if(question.content?.description != null) question.content?.description else ""
+                if(question.content?.description != null){
+                    holder.rateLy.visibility = View.VISIBLE
+                    holder.descriptionRateTv.visibility = View.VISIBLE
+                    holder.descriptionRateTv.text = question.content?.description
+                } else{
+                    holder.rateLy.visibility = View.GONE
+                    holder.descriptionRateTv.visibility = View.GONE
+                }
+                holder.radioAnswers.visibility = View.VISIBLE
+
+                val params: LinearLayout.LayoutParams =
+                    LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+                params.setMargins(10, 10, 10, 10)
 
                 answers = ArrayList()
                 if(question.content?.items != null){
                     for(q in question!!.content!!.items){
+                        val v = View(context)
+                        v.layoutParams = LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT,
+                            5
+                        )
+                        v.setBackgroundColor(context.getColor(R.color.button_gray))
+                        if(question!!.content!!.items[0] != q){
+                            holder.radioAnswers.addView(v)
+                        }
                         var rb = RadioButton(context)
-                        rb.text = q
+                        if(q.isDigitsOnly()){
+                            rb.text = "Level $q "
+                        }else{
+                            rb.text = "$q"
+                        }
+
+                        rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                        rb.layoutParams = params
                         holder.radioAnswers.addView(rb)
                     }
                 }
 
-                holder.radioAnswers.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+                holder.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
                     val radioButton = radioGroup.findViewById<View>(i)
                     val index = radioGroup.indexOfChild(radioButton)
-                    saveAnswer?.saveInArray(id = question.id, answer = "${index}", recordValue = true)
-                })
+                    saveAnswer?.saveInArray(
+                        id = question.id,
+                        answer = "${index}",
+                        recordValue = true
+                    )
+                }
             }
         }
     }

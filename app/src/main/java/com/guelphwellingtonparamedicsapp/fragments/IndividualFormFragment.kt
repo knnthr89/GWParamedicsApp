@@ -30,6 +30,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
     private var adapter : IndividualFormAdapter? = null
     private lateinit var fragmentIndividualFormBinding : FragmentIndividualFormBinding
     private var hashmapAnswers : HashMap<Int, String> = HashMap()
+    private var assessmentId : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -68,6 +69,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
 
     fun fillRecyclerView(individualFormModel: IndividualFormModel) {
         if (individualFormModel != null) {
+            assessmentId = individualFormModel.id
             questions.clear()
             for (i in individualFormModel.sections) {
                 for (y in i.questions) {
@@ -85,25 +87,27 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
     }
 
     override fun selected(answer: Boolean) {
-        if(hashmapAnswers.size > 1){
-            hashmapAnswers.clear()
+        if(assessmentId == 1){
+            if(hashmapAnswers.size > 1){
+                hashmapAnswers.clear()
+            }
+            if(answer){
+                val q2 = questions[1]
+                q2.showIt = false
+                val q3 = questions[2]
+                q3.showIt = true
+                val q4 = questions[3]
+                q4.showIt = true
+            }else{
+                val q2 = questions[1]
+                q2.showIt = true
+                val q3 = questions[2]
+                q3.showIt = false
+                val q4 = questions[3]
+                q4.showIt = false
+            }
+            adapter?.notifyDataSetChanged()
         }
-       if(answer){
-           val q2 = questions[1]
-           q2.showIt = false
-           val q3 = questions[2]
-           q3.showIt = true
-           val q4 = questions[3]
-           q4.showIt = true
-       }else{
-           val q2 = questions[1]
-           q2.showIt = true
-           val q3 = questions[2]
-           q3.showIt = false
-           val q4 = questions[3]
-           q4.showIt = false
-       }
-        adapter?.notifyDataSetChanged()
     }
 
     override fun saveInArray(id: Int, answer: String, recordValue : Boolean) {

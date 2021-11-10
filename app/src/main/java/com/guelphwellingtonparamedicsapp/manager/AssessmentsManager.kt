@@ -93,6 +93,8 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         body.put("assessmentDate", sdf.format(Date()))
         body.put("questionResults", jsonArrayAnswers)
 
+        Log.e("json", body.toString())
+
         val communication = Communication(context)
         communication.setCommunicationListener(this)
         communication.postJSON(path = CommunicationPath.ASSESSMENTS, bodyData = body.toString())

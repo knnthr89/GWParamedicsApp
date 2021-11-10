@@ -7,7 +7,8 @@ enum class AnswersEnum(index: Int) {
     TF(0),
     MULTIPLE_SELECT(1),
     FILL_IN(2),
-    RATE(3)
+    RATE(3),
+    MULTIPLE_CHOICE(4)
     ;
 
     var index: Int = 0
@@ -21,9 +22,10 @@ enum class AnswersEnum(index: Int) {
             val method = valueOfEnum(index)
             description = when (method) {
                 TF -> "TF"
-                MULTIPLE_SELECT -> "MutipleSelect"
+                MULTIPLE_SELECT -> "MultipleSelect"
                 FILL_IN -> "FillIn"
                 RATE -> "Rate"
+                MULTIPLE_CHOICE -> "MultipleChoice"
             }
             return description
         }
