@@ -14,26 +14,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.RadioButton
 
 import android.widget.RadioGroup
-import androidx.core.widget.addTextChangedListener
 import java.util.HashMap
-import java.util.TimerTask
-
-import java.util.Timer
 
 import android.text.Editable
 
 import android.text.TextWatcher
+import androidx.core.view.marginStart
 
 
-
-
-class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>(), AnswersAdapter.SelectMultipleAnswer {
+class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>(), CheckboxAnswersAdapter.SelectMultipleAnswer{
     private lateinit var context: Context
     private lateinit var questions: ArrayList<QuestionModel>
     private lateinit var answers : ArrayList<String>
     private var multipleAnswer  = HashMap<Int, ArrayList<String>>()
     private var listener : SelectedAnswer? = null
     private var saveAnswer : SaveAnswer? = null
+    private lateinit var holder : ViewHolder
 
     interface SaveAnswer {
         fun saveInArray(id : Int, answer : String, recordValue : Boolean)
@@ -60,6 +56,8 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val question = questions[position]
 
+        this.holder = holder
+
         holder.questionTv.text = question.title
 
         if(!question.showIt){
@@ -84,10 +82,6 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
             }
         }
 
-       holder.itemView.setOnClickListener {
-           Toast.makeText(context, "id: ${question.id}", Toast.LENGTH_SHORT).show()
-       }
-
         when(question.type){
             AnswersEnum.TF.path -> {
                 holder.booleanAnswer.visibility = View.VISIBLE
@@ -100,7 +94,7 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                         answers.add(a)
                     }
 
-                    val adapter = AnswersAdapter(context, answers, question.id, this)
+                    val adapter = CheckboxAnswersAdapter(context, answers, question.id, this)
                     var mLayoutManager = LinearLayoutManager(context)
                     mLayoutManager.orientation = LinearLayoutManager.VERTICAL
                     holder.recyclerviewAnswers.layoutManager = mLayoutManager
@@ -133,7 +127,23 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
             }
             AnswersEnum.RATE.path -> {
                 holder.rateLy.visibility = View.VISIBLE
+                holder.recyclerviewAnswers.visibility = View.VISIBLE
                 holder.descriptionRateTv.text = if(question.content?.description != null) question.content?.description else ""
+
+                answers = ArrayList()
+                if(question.content?.items != null){
+                    for(q in question!!.content!!.items){
+                        var rb = RadioButton(context)
+                        rb.text = q
+                        holder.radioAnswers.addView(rb)
+                    }
+                }
+
+                holder.radioAnswers.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { radioGroup, i ->
+                    val radioButton = radioGroup.findViewById<View>(i)
+                    val index = radioGroup.indexOfChild(radioButton)
+                    saveAnswer?.saveInArray(id = question.id, answer = "${index}", recordValue = true)
+                })
             }
         }
     }
@@ -152,10 +162,12 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
         var rbNo : RadioButton = v.findViewById(R.id.rbNo)
         val rateLy : LinearLayout = v.findViewById(R.id.rateLy)
         val descriptionRateTv : TextView = v.findViewById(R.id.descriptionRateTv)
+        val radioAnswers : RadioGroup = v.findViewById(R.id.radioAnswers)
     }
 
     override fun selected(answers: ArrayList<String>, type: AnswersEnum, id: Int) {
         saveAnswer?.saveInArray(id = id, answer = answers.toString(), recordValue = true)
 
     }
+
 }

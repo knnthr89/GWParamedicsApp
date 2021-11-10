@@ -15,8 +15,8 @@ class Communication(var context: Context?) {
     private var mUserDao: UserDao? = null
 
     companion object {
-        //var SERVER = "http://10.0.2.2:5000/"
-        var SERVER = "http://1b68-2607-fea8-1be0-1bcb-514e-55cb-3a02-516.ngrok.io/"
+        var SERVER = "http://10.0.2.2:5000/"
+        //var SERVER = "http://1b68-2607-fea8-1be0-1bcb-514e-55cb-3a02-516.ngrok.io/"
         var TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijk3MGExMjA5LTg4ZjAtNDAxOS04Mzk1LTBkZmFmNjVmNTA1MCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGd1ZWxwaC5jYSIsImp0aSI6IjkyOTQ4ZGI1LTNiMWItNGI4MC1hNjA5LTVhMDU3ZDFlYjZjZSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNjM2NjY2ODI3LCJpc3MiOiJQYXJhbWVkaWNBUEkiLCJhdWQiOiJQYXJhbWVkaWNBUEkifQ.oe56QpM9gl1RHEwvKZgDi3_lqN3RfC0oGg_f-aPmRHE"
     }
 

@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.core.view.setPadding
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.enums.AnswersEnum
-import kotlinx.coroutines.selects.select
 
-class AnswersAdapter() : RecyclerView.Adapter<AnswersAdapter.ViewHolder>() {
+class CheckboxAnswersAdapter() : RecyclerView.Adapter<CheckboxAnswersAdapter.ViewHolder>() {
 
     private lateinit var context: Context
     private lateinit var answers: ArrayList<String>
@@ -46,7 +43,7 @@ class AnswersAdapter() : RecyclerView.Adapter<AnswersAdapter.ViewHolder>() {
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.answer_item, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.checkbox_answer_item, parent, false)
         return ViewHolder(v)
     }
 

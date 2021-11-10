@@ -1,6 +1,7 @@
 package com.guelphwellingtonparamedicsapp.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,6 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter.SaveAnswer
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter.SelectedAnswer
-import com.guelphwellingtonparamedicsapp.daos.UserDao
-import com.guelphwellingtonparamedicsapp.database.AppDatabase
 import com.guelphwellingtonparamedicsapp.databinding.FragmentIndividualFormBinding
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.SavePatientAssessment
@@ -109,14 +108,15 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
 
     override fun saveInArray(id: Int, answer: String, recordValue : Boolean) {
         if(recordValue){
-            if(answer.length > 2){
+            if(answer != "[]"){
                 hashmapAnswers.put(id, answer)
-            }else if(answer.length <= 2){
+            }else {
                 hashmapAnswers.remove(id)
             }
         }else {
             hashmapAnswers.remove(id)
         }
+        Log.e("list", hashmapAnswers.toString())
     }
 
     override fun onSavePatienAssessmentSuccess(message: String) {

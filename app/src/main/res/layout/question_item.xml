@@ -76,6 +76,11 @@
 
         </RadioGroup>
 
+        <RadioGroup
+            android:id="@+id/radioAnswers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
         <LinearLayout
             android:id="@+id/rateLy"
             android:layout_width="match_parent"
