@@ -6,7 +6,8 @@ class QuestionModel(
     var title: String,
     var content: ContentModel?,
     var skippedForScoring : Boolean,
-    var showIt : Boolean = true
+    var showIt : Boolean = true,
+    var needType : Boolean = false
 ) {
 
 }

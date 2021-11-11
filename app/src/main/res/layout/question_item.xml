@@ -107,12 +107,26 @@
             android:visibility="gone"
             android:orientation="vertical" />
 
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerviewAnswers"
+        <LinearLayout
+            android:id="@+id/checkboxAnswers"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_margin="@dimen/margin_10"/>
+
+        <EditText
+            android:id="@+id/textValueEt"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edittext_40dp"
+            android:layout_margin="@dimen/margin_5"
+            android:layout_weight="1"
+            android:background="@drawable/box_border_gray"
+            android:maxEms="5"
+            android:padding="@dimen/margin_5"
+            android:visibility="gone"
+            android:layout_gravity="bottom"
+            android:layout_alignParentBottom="true"/>
 
     </LinearLayout>
 

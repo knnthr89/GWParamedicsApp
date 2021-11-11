@@ -77,7 +77,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
                     questions.add(y)
                 }
             }
-            adapter = IndividualFormAdapter(requireContext(), questions, this, this)
+            adapter = IndividualFormAdapter(requireContext(), questions, this, this, assessmentId)
             var mLayoutManager = LinearLayoutManager(requireContext())
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             fragmentIndividualFormBinding.formQuestionsRv.layoutManager = mLayoutManager
@@ -98,6 +98,9 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
                 q3.showIt = true
                 val q4 = questions[3]
                 q4.showIt = true
+                adapter?.notifyItemChanged(1)
+                adapter?.notifyItemChanged(2)
+                adapter?.notifyItemChanged(3)
             }else{
                 val q2 = questions[1]
                 q2.showIt = true
@@ -105,8 +108,11 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
                 q3.showIt = false
                 val q4 = questions[3]
                 q4.showIt = false
+                adapter?.notifyItemChanged(1)
+                adapter?.notifyItemChanged(2)
+                adapter?.notifyItemChanged(3)
             }
-            adapter?.notifyDataSetChanged()
+
         }
     }
 
