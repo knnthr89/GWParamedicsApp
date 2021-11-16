@@ -11,11 +11,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter
+import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter.SaveAnswerList
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter.SaveAnswer
 import com.guelphwellingtonparamedicsapp.adapters.IndividualFormAdapter.SelectedAnswer
 import com.guelphwellingtonparamedicsapp.databinding.FragmentIndividualFormBinding
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.SavePatientAssessment
+import com.guelphwellingtonparamedicsapp.models.AnswerModel
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
 import java.text.SimpleDateFormat
@@ -23,14 +25,15 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatientAssessment {
+class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatientAssessment, SaveAnswerList {
 
     lateinit var form : IndividualFormModel
     private var questions: ArrayList<QuestionModel> = ArrayList()
     private var adapter : IndividualFormAdapter? = null
     private lateinit var fragmentIndividualFormBinding : FragmentIndividualFormBinding
-    private var hashmapAnswers : HashMap<Int, String> = HashMap()
+    private var hashmapAnswers : HashMap<Int, AnswerModel> = HashMap()
     private var assessmentId : Int = 0
+    private var totalScore : Int = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +55,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
         fragmentIndividualFormBinding.calculateBtn.setOnClickListener {
             if(hashmapAnswers.isNotEmpty() && fragmentIndividualFormBinding.patientIdEt.text.isNotBlank() && fragmentIndividualFormBinding.paramedicsEt.text.isNotBlank() && fragmentIndividualFormBinding.dateEt.text.isNotBlank()){
                 AssessmentsManager.getInstance(requireContext()).setSavePatientAssessment(this)
-                AssessmentsManager.getInstance(requireContext()).savePatientAssessment(totalScore = 0, interactiveFormId = form.id, patientId = fragmentIndividualFormBinding.patientIdEt.text.toString(), date = SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()), answers = hashmapAnswers)
+                AssessmentsManager.getInstance(requireContext()).savePatientAssessment(totalScore = totalScore, interactiveFormId = form.id, patientId = fragmentIndividualFormBinding.patientIdEt.text.toString(), date = SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()), answers = hashmapAnswers)
             }else{
                 Toast.makeText(context, R.string.login_email_error, Toast.LENGTH_SHORT).show()
             }
@@ -77,7 +80,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
                     questions.add(y)
                 }
             }
-            adapter = IndividualFormAdapter(requireContext(), questions, this, this, assessmentId)
+            adapter = IndividualFormAdapter(requireContext(), questions, this, this, assessmentId, this)
             var mLayoutManager = LinearLayoutManager(requireContext())
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             fragmentIndividualFormBinding.formQuestionsRv.layoutManager = mLayoutManager
@@ -116,17 +119,23 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
         }
     }
 
-    override fun saveInArray(id: Int, answer: String, recordValue : Boolean) {
+    override fun saveInArray(id: Int, answer: AnswerModel, recordValue : Boolean) {
+        totalScore = 0
         if(recordValue){
-            if(answer != "[]"){
-                hashmapAnswers.put(id, answer)
+            if(answer.description != "[]"){
+                hashmapAnswers[id] = answer
             }else {
                 hashmapAnswers.remove(id)
             }
         }else {
             hashmapAnswers.remove(id)
         }
+
+        hashmapAnswers.forEach { i, answerModel ->
+            totalScore += answerModel.value
+        }
         Log.e("list", hashmapAnswers.toString())
+        Log.e("score", totalScore.toString())
     }
 
     override fun onSavePatienAssessmentSuccess(message: String) {
@@ -136,6 +145,22 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
 
     override fun onSavePatienAssessmentFail(message: String, code: Int?) {
         Toast.makeText(context, "$message , $code", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun saveAnswers(id : Int, answers: ArrayList<AnswerModel>) {
+        totalScore = 0
+       answers.forEach {
+           if(it.description != "[]"){
+               hashmapAnswers[id] = it
+           }else {
+            hashmapAnswers.remove(id)
+        }
+       }
+        hashmapAnswers.forEach { i, answerModel ->
+            totalScore += answerModel.value
+        }
+        Log.e("list", hashmapAnswers.toString())
+        Log.e("score", totalScore.toString())
     }
 
 }

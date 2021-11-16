@@ -8,6 +8,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.guelphwellingtonparamedicsapp.fragments.AssessmentsFragment
+import com.guelphwellingtonparamedicsapp.models.AnswerModel
 import com.guelphwellingtonparamedicsapp.models.AssessmentModel
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
@@ -72,7 +73,7 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         interactiveFormId: Int,
         patientId: String,
         date: String,
-        answers: HashMap<Int, String>
+        answers: HashMap<Int, AnswerModel>
     ){
 
         val jsonArrayAnswers = JSONArray()
@@ -80,7 +81,7 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         for(z in answers){
             val jsonArraySingleAnswer = JSONObject()
             jsonArraySingleAnswer.put("questionId", z.key.toString())
-            jsonArraySingleAnswer.put("answer", z.value)
+            jsonArraySingleAnswer.put("answer", z.value.description)
             jsonArrayAnswers.put(jsonArraySingleAnswer)
         }
 

@@ -1,5 +1,6 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
@@ -19,17 +20,26 @@ import android.text.TextWatcher
 import android.util.Log
 import android.widget.LinearLayout
 import org.jetbrains.anko.find
+import android.widget.SeekBar
+import android.widget.SeekBar.OnSeekBarChangeListener
+import com.guelphwellingtonparamedicsapp.models.AnswerModel
+
 
 class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
     private lateinit var context: Context
     private lateinit var questions: ArrayList<QuestionModel>
     private var listener: SelectedAnswer? = null
     private var saveAnswer: SaveAnswer? = null
-    private var answersSelected: ArrayList<String> = ArrayList()
-    private var assessmentId : Int = 0
+    private var answersSelected: ArrayList<AnswerModel> = ArrayList()
+    private var assessmentId: Int = 0
+    private var saveAnswersList : SaveAnswerList? = null
+
+    interface SaveAnswerList {
+        fun saveAnswers(id : Int, answers : ArrayList<AnswerModel>)
+    }
 
     interface SaveAnswer {
-        fun saveInArray(id: Int, answer: String, recordValue: Boolean)
+        fun saveInArray(id: Int, answer: AnswerModel, recordValue: Boolean)
     }
 
     interface SelectedAnswer {
@@ -41,13 +51,15 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
         questions: ArrayList<QuestionModel>,
         listener: SelectedAnswer,
         saveAnswer: SaveAnswer,
-        assessmentId : Int
+        assessmentId: Int,
+        saveAnswersList : SaveAnswerList
     ) : this() {
         this.context = context
         this.questions = questions
         this.listener = listener
         this.saveAnswer = saveAnswer
         this.assessmentId = assessmentId
+        this.saveAnswersList = saveAnswersList
     }
 
     override fun onCreateViewHolder(
@@ -77,11 +89,17 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
 
         holder.booleanAnswer.setOnCheckedChangeListener { group, checkedId ->
             if (holder.rbYes.id == checkedId) {
-                listener?.selected(true)
-                saveAnswer?.saveInArray(id = question.id, answer = "true", recordValue = true)
+                var answerModel = AnswerModel(description = "true", value = 0)
+                if(question.id == 1){
+                    listener?.selected(true)
+                }
+                saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = true)
             } else if (holder.rbNo.id == checkedId) {
-                listener?.selected(false)
-                saveAnswer?.saveInArray(id = question.id, answer = "false", recordValue = true)
+                var answerModel = AnswerModel(description = "false", value = 0)
+                if(question.id == 1) {
+                    listener?.selected(false)
+                }
+                saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = false)
             }
         }
 
@@ -100,9 +118,10 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
             }
 
             override fun afterTextChanged(s: Editable) {
+                val answer = AnswerModel(description = s.toString(), value = 0)
                 saveAnswer?.saveInArray(
                     id = question.id,
-                    answer = s.toString(),
+                    answer = answer,
                     recordValue = true
                 )
             }
@@ -123,9 +142,11 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
             }
 
             override fun afterTextChanged(s: Editable) {
+                var answer = AnswerModel(description = s.toString(), value = 0)
+
                 saveAnswer?.saveInArray(
                     id = question.id,
-                    answer = s.toString(),
+                    answer = answer,
                     recordValue = true
                 )
             }
@@ -164,16 +185,24 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                             holder.descriptionTv.visibility = View.GONE
                             holder.descriptionRateTv.visibility = View.GONE
                             val radioButton = RadioButton(context)
-                            radioButton.text = if(!a.description.isNullOrBlank()) a.description else ""
+                            radioButton.text =
+                                if (!a.description.isNullOrBlank()) a.description else ""
                             radioButton.layoutDirection = View.LAYOUT_DIRECTION_RTL
                             radioButton.layoutParams = params
                             holder.radioAnswers.addView(radioButton)
                             holder.radioAnswers.addView(v)
 
-                            radioButton.setOnCheckedChangeListener { compoundButton, b ->
-                                if(b){
+                            holder.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
+                                var rb = radioGroup.find<RadioButton>(i)
+                                var answerModel : AnswerModel? = null
+                                question!!.content!!.items.forEach {
+                                    if (it.description == rb.text.toString()){
+                                        answerModel = it
+                                    }
+                                }
+                                if(rb.isChecked){
                                     saveAnswer?.saveInArray(
-                                        id = question.id, answer = radioButton.text.toString(),
+                                        id = question.id, answer = answerModel!!,
                                         recordValue = true
                                     )
                                 }
@@ -181,36 +210,40 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                         }
                         question.title != "Please select the assistive device" -> {
                             val checkbox = CheckBox(context)
-                            checkbox.text = if(!a.description.isNullOrBlank()) a.description else ""
+                            checkbox.text =
+                                if (!a.description.isNullOrBlank()) a.description else ""
                             checkbox.layoutDirection = View.LAYOUT_DIRECTION_RTL
                             checkbox.layoutParams = params
                             holder.checkboxAnswers.addView(checkbox)
                             holder.checkboxAnswers.addView(v)
 
                             checkbox.setOnCheckedChangeListener { compoundButton, b ->
+                                var answer : AnswerModel? = null
+                                question!!.content!!.items.forEach {
+                                    if(it.description == checkbox.text){
+                                        answer = it
+                                    }
+                                }
                                 if (b) {
                                     if (answersSelected.isNotEmpty()) {
-                                        if (!answersSelected.contains(checkbox.text)) {
-                                            answersSelected.add(checkbox.text.toString())
+                                        if (!answersSelected.contains(answer)) {
+                                            answersSelected.add(answer!!)
                                         }
                                     } else {
-                                        answersSelected.add(checkbox.text.toString())
+                                        answersSelected.add(answer!!)
                                     }
                                 } else {
                                     if (answersSelected.isNotEmpty()) {
-                                        answersSelected.remove(checkbox.text.toString())
+                                        answersSelected.remove(answer)
                                     }
                                 }
-                                saveAnswer?.saveInArray(
-                                    id = question.id, answer = answersSelected.toString(),
-                                    recordValue = true
-                                )
+                                saveAnswersList?.saveAnswers(id = question.id, answers = answersSelected)
                             }
 
                         }
                         else -> {
                             val rb = RadioButton(context)
-                            rb.text = if(!a.description.isNullOrBlank()) a.description else ""
+                            rb.text = if (!a.description.isNullOrBlank()) a.description else ""
 
                             rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
                             rb.layoutParams = params
@@ -218,14 +251,20 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                             holder.radioAnswers.addView(v)
 
                             rb.setOnCheckedChangeListener { compoundButton, b ->
-                                if(b){
-                                    if(rb.text.toString() == "Another assistive device"){
+                                if (b) {
+                                    if (rb.text.toString() == "Another assistive device") {
                                         holder.textValueEt.visibility = View.VISIBLE
                                         holder.textValueEt.setText("")
-                                    }else{
+                                    } else {
+                                        var answer : AnswerModel? = null
+                                        question!!.content!!.items.forEach {
+                                            if(it.description == rb.text.toString()){
+                                                answer = it
+                                            }
+                                        }
                                         holder.textValueEt.visibility = View.GONE
                                         saveAnswer?.saveInArray(
-                                            id = question.id, answer = rb.text.toString(),
+                                            id = question.id, answer = answer!!,
                                             recordValue = true
                                         )
                                     }
@@ -263,42 +302,69 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                 params.setMargins(10, 10, 10, 10)
 
                 if (question.content?.items != null) {
-                    for (q in question!!.content!!.items) {
-                        val v = View(context)
-                        v.layoutParams = LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT,
-                            5
-                        )
-                        v.setBackgroundColor(context.getColor(R.color.button_gray))
-                        if (question!!.content!!.items[0] != q) {
-                            holder.radioAnswers.addView(v)
-                        }
-                        var rb = RadioButton(context)
-                        if (q.description.length == 1 || q.description.length == 2) {
-                            rb.text = "Level ${q.description} "
-                        } else {
-                            rb.text = "${q.description}"
-                        }
+                    if (assessmentId == 4 && question!!.content!!.items.size == 0) {
+                        holder.seekElements.visibility = View.VISIBLE
+                        holder.seekContent.visibility = View.VISIBLE
 
-                        rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                        rb.layoutParams = params
-                        holder.radioAnswers.addView(rb)
+                        holder.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                            var pval = 0
+                            override fun onProgressChanged(
+                                seekBar: SeekBar,
+                                progress: Int,
+                                fromUser: Boolean
+                            ) {
+                                pval = progress
+                            }
+
+                            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                                //write custom code to on start progress
+                            }
+
+                            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                                holder.seekNumberTv.text = "Level : $pval"
+                                var answer = AnswerModel(description = "$pval", value = 0)
+                                saveAnswer?.saveInArray(
+                                    id = question.id,
+                                    answer = answer,
+                                    recordValue = true
+                                )
+                            }
+                        })
+                    } else {
+                        for (q in question!!.content!!.items) {
+                            val v = View(context)
+                            v.layoutParams = LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                5
+                            )
+                            v.setBackgroundColor(context.getColor(R.color.button_gray))
+                            if (question!!.content!!.items[0] != q && question!!.content!!.items.size > 1) {
+                                holder.radioAnswers.addView(v)
+                            }
+
+                            if (q.description.length != 1 || q.description.length != 2) {
+                                var rb = RadioButton(context)
+                                rb.text = "${q.description}"
+                                rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                                rb.layoutParams = params
+                                holder.radioAnswers.addView(rb)
+                            }
+                        }
                     }
                 }
 
                 holder.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
                     var rb = radioGroup.find<RadioButton>(i)
-                    var pos : Int = -1
-                    var level = rb.text.toString().substringAfter("")
+                    var pos: Int = -1
                     for (i in 0 until question!!.content!!.items.size) {
                         if (question!!.content!!.items[i].description === rb.text) {
                             pos = i
                         }
                     }
-
+                    var answer = AnswerModel(description = pos.toString(), value = 0)
                     saveAnswer?.saveInArray(
                         id = question.id,
-                        answer = if(assessmentId == 4) level.trim().substringAfter(" ", "") else pos.toString(),
+                        answer = answer,
                         recordValue = true
                     )
                 }
@@ -322,5 +388,9 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
         val descriptionRateTv: TextView = v.findViewById(R.id.descriptionRateTv)
         val radioAnswers: RadioGroup = v.findViewById(R.id.radioAnswers)
         val checkboxAnswers: LinearLayout = v.findViewById(R.id.checkboxAnswers)
+        val seekElements : LinearLayout = v.findViewById(R.id.seekElements)
+        val seekContent : LinearLayout = v.findViewById(R.id.seekContent)
+        val seekNumberTv : TextView = v.findViewById(R.id.seekNumberTv)
+        val seekBar : SeekBar = v.findViewById(R.id.seekBar)
     }
 }

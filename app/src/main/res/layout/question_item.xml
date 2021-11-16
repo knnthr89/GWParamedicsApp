@@ -115,6 +115,56 @@
             android:visibility="gone"
             android:layout_margin="@dimen/margin_10"/>
 
+        <LinearLayout
+            android:id="@+id/seekElements"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_margin="@dimen/margin_10"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/seekContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="@dimen/margin_5">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_5" />
+
+                <SeekBar
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:progress="0"
+                    android:max="10"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10"
+                    android:layout_margin="@dimen/margin_5"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/seekNumberTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="Level: 0" />
+
+        </LinearLayout>
+
         <EditText
             android:id="@+id/textValueEt"
             android:layout_width="match_parent"
@@ -126,7 +176,8 @@
             android:padding="@dimen/margin_5"
             android:visibility="gone"
             android:layout_gravity="bottom"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+           />
 
     </LinearLayout>
 
