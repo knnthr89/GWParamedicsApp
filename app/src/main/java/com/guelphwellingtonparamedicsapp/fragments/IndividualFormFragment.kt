@@ -50,7 +50,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
         }
 
         fragmentIndividualFormBinding.calculateBtn.setOnClickListener {
-            if(hashmapAnswers.isNotEmpty()){
+            if(hashmapAnswers.isNotEmpty() && fragmentIndividualFormBinding.patientIdEt.text.isNotBlank() && fragmentIndividualFormBinding.paramedicsEt.text.isNotBlank() && fragmentIndividualFormBinding.dateEt.text.isNotBlank()){
                 AssessmentsManager.getInstance(requireContext()).setSavePatientAssessment(this)
                 AssessmentsManager.getInstance(requireContext()).savePatientAssessment(totalScore = 0, interactiveFormId = form.id, patientId = fragmentIndividualFormBinding.patientIdEt.text.toString(), date = SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()), answers = hashmapAnswers)
             }else{

@@ -10,28 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.enums.AnswersEnum
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.widget.RadioButton
 
 import android.widget.RadioGroup
-import java.util.HashMap
-
 import android.text.Editable
 
 import android.text.TextWatcher
 import android.util.Log
-import android.view.Gravity
-import androidx.core.view.marginStart
 import android.widget.LinearLayout
-import androidx.core.text.isDigitsOnly
-import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.find
-import org.w3c.dom.Text
-import android.R.id
-
-
-
-
 
 class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
     private lateinit var context: Context
@@ -98,6 +85,52 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
             }
         }
 
+        holder.timeScoreEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int, count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int, before: Int,
+                count: Int
+            ) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                saveAnswer?.saveInArray(
+                    id = question.id,
+                    answer = s.toString(),
+                    recordValue = true
+                )
+            }
+        })
+
+        holder.textValueEt.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(
+                s: CharSequence, start: Int, count: Int,
+                after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                s: CharSequence, start: Int, before: Int,
+                count: Int
+            ) {
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+                saveAnswer?.saveInArray(
+                    id = question.id,
+                    answer = s.toString(),
+                    recordValue = true
+                )
+            }
+        })
+
         when (question.type) {
             AnswersEnum.TF.path -> {
                 holder.booleanAnswer.visibility = View.VISIBLE
@@ -126,82 +159,81 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                     )
                     v.setBackgroundColor(context.getColor(R.color.button_gray))
 
-                    if (question.title != "Please select the assistive device") {
-                        val checkbox = CheckBox(context)
-                        checkbox.text = a
-                        checkbox.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                        checkbox.layoutParams = params
-                        holder.checkboxAnswers.addView(checkbox)
-                        holder.checkboxAnswers.addView(v)
+                    when {
+                        assessmentId == 2 -> {
+                            holder.descriptionTv.visibility = View.GONE
+                            holder.descriptionRateTv.visibility = View.GONE
+                            val radioButton = RadioButton(context)
+                            radioButton.text = if(!a.description.isNullOrBlank()) a.description else ""
+                            radioButton.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                            radioButton.layoutParams = params
+                            holder.radioAnswers.addView(radioButton)
+                            holder.radioAnswers.addView(v)
 
-                        checkbox.setOnCheckedChangeListener { compoundButton, b ->
-                            if (b) {
-                                if (answersSelected.isNotEmpty()) {
-                                    if (!answersSelected.contains(checkbox.text)) {
-                                        answersSelected.add(checkbox.text.toString())
-                                    }
-                                } else {
-                                    answersSelected.add(checkbox.text.toString())
-                                }
-                            } else {
-                                if (answersSelected.isNotEmpty()) {
-                                    answersSelected.remove(checkbox.text.toString())
-                                }
-                            }
-                            saveAnswer?.saveInArray(
-                                id = question.id, answer = answersSelected.toString(),
-                                recordValue = true
-                            )
-                        }
-
-                    } else {
-                        val rb = RadioButton(context)
-                        rb.text = a
-                        rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
-                        rb.layoutParams = params
-                        holder.radioAnswers.addView(rb)
-                        holder.radioAnswers.addView(v)
-
-                        rb.setOnCheckedChangeListener { compoundButton, b ->
-                            if(b){
-                                if(rb.text.toString() == "Another assistive device"){
-                                    holder.textValueEt.visibility = View.VISIBLE
-                                    holder.textValueEt.setText("")
-                                }else{
-                                    holder.textValueEt.visibility = View.GONE
+                            radioButton.setOnCheckedChangeListener { compoundButton, b ->
+                                if(b){
                                     saveAnswer?.saveInArray(
-                                        id = question.id, answer = rb.text.toString(),
+                                        id = question.id, answer = radioButton.text.toString(),
                                         recordValue = true
                                     )
                                 }
                             }
                         }
-                    }
+                        question.title != "Please select the assistive device" -> {
+                            val checkbox = CheckBox(context)
+                            checkbox.text = if(!a.description.isNullOrBlank()) a.description else ""
+                            checkbox.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                            checkbox.layoutParams = params
+                            holder.checkboxAnswers.addView(checkbox)
+                            holder.checkboxAnswers.addView(v)
 
+                            checkbox.setOnCheckedChangeListener { compoundButton, b ->
+                                if (b) {
+                                    if (answersSelected.isNotEmpty()) {
+                                        if (!answersSelected.contains(checkbox.text)) {
+                                            answersSelected.add(checkbox.text.toString())
+                                        }
+                                    } else {
+                                        answersSelected.add(checkbox.text.toString())
+                                    }
+                                } else {
+                                    if (answersSelected.isNotEmpty()) {
+                                        answersSelected.remove(checkbox.text.toString())
+                                    }
+                                }
+                                saveAnswer?.saveInArray(
+                                    id = question.id, answer = answersSelected.toString(),
+                                    recordValue = true
+                                )
+                            }
+
+                        }
+                        else -> {
+                            val rb = RadioButton(context)
+                            rb.text = if(!a.description.isNullOrBlank()) a.description else ""
+
+                            rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
+                            rb.layoutParams = params
+                            holder.radioAnswers.addView(rb)
+                            holder.radioAnswers.addView(v)
+
+                            rb.setOnCheckedChangeListener { compoundButton, b ->
+                                if(b){
+                                    if(rb.text.toString() == "Another assistive device"){
+                                        holder.textValueEt.visibility = View.VISIBLE
+                                        holder.textValueEt.setText("")
+                                    }else{
+                                        holder.textValueEt.visibility = View.GONE
+                                        saveAnswer?.saveInArray(
+                                            id = question.id, answer = rb.text.toString(),
+                                            recordValue = true
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
-
-                holder.textValueEt.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence, start: Int, count: Int,
-                        after: Int
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence, start: Int, before: Int,
-                        count: Int
-                    ) {
-
-                    }
-
-                    override fun afterTextChanged(s: Editable) {
-                        saveAnswer?.saveInArray(
-                            id = question.id,
-                            answer = s.toString(),
-                            recordValue = true
-                        )
-                    }
-                })
             }
             AnswersEnum.FILL_IN.path -> {
                 holder.timeScoreEt.visibility = View.VISIBLE
@@ -213,7 +245,7 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                 }
             }
             AnswersEnum.RATE.path -> {
-                if (question.content?.description != null) {
+                if (!question.content?.description.isNullOrBlank()) {
                     holder.rateLy.visibility = View.VISIBLE
                     holder.descriptionRateTv.visibility = View.VISIBLE
                     holder.descriptionRateTv.text = question.content?.description
@@ -242,10 +274,10 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                             holder.radioAnswers.addView(v)
                         }
                         var rb = RadioButton(context)
-                        if (q.length == 1 || q.length == 2) {
-                            rb.text = "Level $q "
+                        if (q.description.length == 1 || q.description.length == 2) {
+                            rb.text = "Level ${q.description} "
                         } else {
-                            rb.text = "$q"
+                            rb.text = "${q.description}"
                         }
 
                         rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
@@ -254,42 +286,19 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
                     }
                 }
 
-                holder.timeScoreEt.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(
-                        s: CharSequence, start: Int, count: Int,
-                        after: Int
-                    ) {
-                    }
-
-                    override fun onTextChanged(
-                        s: CharSequence, start: Int, before: Int,
-                        count: Int
-                    ) {
-
-                    }
-
-                    override fun afterTextChanged(s: Editable) {
-                        saveAnswer?.saveInArray(
-                            id = question.id,
-                            answer = s.toString(),
-                            recordValue = true
-                        )
-                    }
-                })
-
                 holder.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
                     var rb = radioGroup.find<RadioButton>(i)
                     var pos : Int = -1
-                    var level = rb.text.toString().substringAfter(" ")
+                    var level = rb.text.toString().substringAfter("")
                     for (i in 0 until question!!.content!!.items.size) {
-                        if (question!!.content!!.items[i] === rb.text) {
+                        if (question!!.content!!.items[i].description === rb.text) {
                             pos = i
                         }
                     }
 
                     saveAnswer?.saveInArray(
                         id = question.id,
-                        answer = if(assessmentId == 4) level.trim().replace(" ", "") else pos.toString(),
+                        answer = if(assessmentId == 4) level.trim().substringAfter(" ", "") else pos.toString(),
                         recordValue = true
                     )
                 }
