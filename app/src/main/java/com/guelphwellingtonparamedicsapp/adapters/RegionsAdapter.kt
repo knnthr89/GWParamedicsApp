@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
@@ -48,6 +49,12 @@ class RegionsAdapter (context: Context, regionList: ArrayList<RegionModel>) : Re
         var mLayoutManager = LinearLayoutManager(context)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
         holder.resourcesRv.layoutManager = mLayoutManager
+        holder.resourcesRv.addItemDecoration(
+            DividerItemDecoration(
+                context,
+                DividerItemDecoration.VERTICAL
+            )
+        )
         holder.resourcesRv.setHasFixedSize(true)
         holder.resourcesRv.adapter = adapter
     }

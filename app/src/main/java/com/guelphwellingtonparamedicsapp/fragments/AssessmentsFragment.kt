@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import com.guelphwellingtonparamedicsapp.activities.BottomNavigationActivity
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.InteractiveFormsAdapter
 import com.guelphwellingtonparamedicsapp.adapters.InteractiveFormsAdapter.SelectedInteractiveForm
+import com.guelphwellingtonparamedicsapp.databinding.FragmentAssessmentsBinding
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.IndividualFormListener
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.InteractiveFormsListener
@@ -21,18 +23,17 @@ import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 
 class AssessmentsFragment : Fragment(), InteractiveFormsListener, SelectedInteractiveForm, IndividualFormListener {
 
-    private lateinit var interactiveRecycler : RecyclerView
+    private lateinit var fragmentAssessmentsBinding: FragmentAssessmentsBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        var rootView = inflater.inflate(R.layout.fragment_assessments, container, false)
 
-        interactiveRecycler = rootView.findViewById(R.id.interactiveRecycler)
+        fragmentAssessmentsBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_assessments, container, false)
 
-        return rootView
+        return fragmentAssessmentsBinding.root
     }
 
     override fun onResume() {
@@ -45,8 +46,8 @@ class AssessmentsFragment : Fragment(), InteractiveFormsListener, SelectedIntera
         if(interactiveFormsList.isNotEmpty()){
             val adapter = InteractiveFormsAdapter(requireContext(), interactiveFormsList, this)
             var mLayoutManager = LinearLayoutManager(requireContext())
-            interactiveRecycler.layoutManager = mLayoutManager
-            interactiveRecycler.adapter = adapter
+            fragmentAssessmentsBinding.interactiveRecycler.layoutManager = mLayoutManager
+            fragmentAssessmentsBinding.interactiveRecycler.adapter = adapter
         }
     }
 
@@ -62,7 +63,7 @@ class AssessmentsFragment : Fragment(), InteractiveFormsListener, SelectedIntera
 
     override fun onIndividualFormSuccess(individualFormModel: IndividualFormModel) {
         if(individualFormModel != null){
-                (activity as BottomNavigationActivity).showFragment(IndividualFormFragment(), individualFormModel = individualFormModel)
+                (activity as BottomNavigationActivity).showFragment(IndividualFormFragment(), model = individualFormModel)
         }
     }
 

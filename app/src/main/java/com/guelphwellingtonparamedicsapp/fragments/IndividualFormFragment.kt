@@ -42,14 +42,11 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
 
         fragmentIndividualFormBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_individual_form, container, false)
 
-        val bundle = this.arguments
-        if (bundle != null) {
-            if (bundle.containsKey("individualForm") && bundle.getSerializable("individualForm") != null) {
-                form = bundle.getSerializable("individualForm") as IndividualFormModel
-            }
-            if(form != null){
-               fillRecyclerView(form)
-            }
+        arguments?.let {
+            form = it.getSerializable("model") as IndividualFormModel
+        }
+        if(form != null){
+            fillRecyclerView(form)
         }
 
         fragmentIndividualFormBinding.calculateBtn.setOnClickListener {
@@ -66,7 +63,6 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
 
     override fun onStart() {
         super.onStart()
-
         fragmentIndividualFormBinding.dateEt.setText(SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()))
     }
 

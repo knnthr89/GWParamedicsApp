@@ -15,6 +15,8 @@ import com.guelphwellingtonparamedicsapp.databinding.FragmentResourcesBinding
 import com.guelphwellingtonparamedicsapp.manager.ResourcesManager
 import com.guelphwellingtonparamedicsapp.manager.ResourcesManager.GetResourcesListener
 import com.guelphwellingtonparamedicsapp.models.RegionModel
+import androidx.recyclerview.widget.DividerItemDecoration
+
 
 class ResourcesFragment : Fragment(), GetResourcesListener {
 
@@ -26,7 +28,8 @@ class ResourcesFragment : Fragment(), GetResourcesListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        fragmentResourcesBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_resources, container, false)
+        fragmentResourcesBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_resources, container, false)
 
         ResourcesManager.getInstance(context = requireContext()).setAllResourcesListener(this)
         ResourcesManager.getInstance(context = requireContext()).getAllResources()
@@ -36,14 +39,14 @@ class ResourcesFragment : Fragment(), GetResourcesListener {
     }
 
     override fun onResourcesSuccess(regionModelList: ArrayList<RegionModel>) {
-        if(regionModelList.isNotEmpty()){
-           var adapter = RegionsAdapter(requireContext(),regionModelList)
-           var mLayoutManager = LinearLayoutManager(requireContext())
-           mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-           fragmentResourcesBinding.resourcesRv.layoutManager = mLayoutManager
-           fragmentResourcesBinding.resourcesRv.setHasFixedSize(true)
-           fragmentResourcesBinding.resourcesRv.adapter = adapter
-       }
+        if (regionModelList.isNotEmpty()) {
+            var adapter = RegionsAdapter(requireContext(), regionModelList)
+            var mLayoutManager = LinearLayoutManager(requireContext())
+            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
+            fragmentResourcesBinding.resourcesRv.layoutManager = mLayoutManager
+            fragmentResourcesBinding.resourcesRv.setHasFixedSize(true)
+            fragmentResourcesBinding.resourcesRv.adapter = adapter
+        }
     }
 
     override fun onResourcesFail(message: String, code: Int?) {

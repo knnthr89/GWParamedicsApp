@@ -1,22 +1,33 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
 import android.content.Context
+import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
+import com.guelphwellingtonparamedicsapp.activities.BottomNavigationActivity
+import com.guelphwellingtonparamedicsapp.fragments.IndividualFormFragment
+import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.ResourceModel
 import com.squareup.picasso.Picasso
+import android.app.Activity
+import com.guelphwellingtonparamedicsapp.fragments.ListContactsFragment
+
 
 class ResourcesAdapter(context : Context, resourcesList : ArrayList<ResourceModel>) : RecyclerView.Adapter<ResourcesAdapter.ViewHolder>() {
 
     private var context: Context = context
     private var resourcesList : ArrayList<ResourceModel> = resourcesList
+    var activity = context as Activity
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -37,9 +48,12 @@ class ResourcesAdapter(context : Context, resourcesList : ArrayList<ResourceMode
         holder.title.text = resource.location
 
         holder.itemView.setOnClickListener {
-            Toast.makeText(context, "${resource.websiteUrl}", Toast.LENGTH_SHORT).show()
+            if (resource.contacts != null){
+                (activity as BottomNavigationActivity).showFragment(ListContactsFragment(), model = resource.contacts)
+            }else{
+                Toast.makeText(context, "nulllll", Toast.LENGTH_SHORT).show()
+            }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -50,5 +64,4 @@ class ResourcesAdapter(context : Context, resourcesList : ArrayList<ResourceMode
         val image : ImageView = v.findViewById(R.id.resourceImage)
         val title : TextView = v.findViewById(R.id.resourceNameTv)
     }
-
 }

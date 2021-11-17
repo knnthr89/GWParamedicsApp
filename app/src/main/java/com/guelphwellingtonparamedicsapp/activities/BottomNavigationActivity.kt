@@ -16,6 +16,7 @@ import com.guelphwellingtonparamedicsapp.fragments.ContactsFragment
 import com.guelphwellingtonparamedicsapp.fragments.ResourcesFragment
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.utils.Utils
+import java.io.Serializable
 
 class BottomNavigationActivity : AppCompatActivity(),
     BottomNavigationView.OnNavigationItemSelectedListener,
@@ -41,11 +42,11 @@ class BottomNavigationActivity : AppCompatActivity(),
     fun showFragment(
         fragment: Fragment,
         addToStack: Boolean = true,
-        individualFormModel: IndividualFormModel? = null
+        model : Serializable? = null
     ) {
         try {
             val args = Bundle()
-            args.putSerializable("individualForm", individualFormModel)
+            args.putSerializable("model", model)
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             fragment.arguments = args

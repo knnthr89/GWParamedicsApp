@@ -8,7 +8,8 @@ enum class CommunicationPath(index: Int) {
     INDIVIDUAL_FORM(3),
     LOGIN(4),
     ASSESSMENTS(5),
-    RESOURCE_REGIONS(6);
+    RESOURCE_REGIONS(6),
+    RESOURCES(7);
 
     var index : Int = 0
     internal set
@@ -25,6 +26,8 @@ enum class CommunicationPath(index: Int) {
                 LOGIN -> "Accounts/login"
                 ASSESSMENTS -> "Assessments"
                 RESOURCE_REGIONS -> "ResourceRegions"
+                RESOURCES -> "Resources"
+
             }
             return description
         }
