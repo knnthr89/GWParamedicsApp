@@ -22,6 +22,8 @@ import android.widget.LinearLayout
 import org.jetbrains.anko.find
 import android.widget.SeekBar
 import android.widget.SeekBar.OnSeekBarChangeListener
+import androidx.databinding.DataBindingUtil
+import com.guelphwellingtonparamedicsapp.databinding.QuestionItemBinding
 import com.guelphwellingtonparamedicsapp.models.AnswerModel
 
 
@@ -34,6 +36,7 @@ class IndividualFormAdapter(private var context: Context,
 ) : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
 
     private var answersSelected: ArrayList<AnswerModel> = ArrayList()
+    private lateinit var questionItemBinding : QuestionItemBinding
 
     interface SaveAnswerList {
         fun saveAnswers(id : Int, answers : ArrayList<AnswerModel>)
@@ -51,14 +54,14 @@ class IndividualFormAdapter(private var context: Context,
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.question_item, parent, false)
-        return ViewHolder(v)
+        questionItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.question_item, parent, false)
+        return ViewHolder(questionItemBinding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val question = questions[position]
 
-        holder.questionTv.text = question.title
+        questionItemBinding.questionTv.text = question.title
 
         if (!question.showIt) {
             holder.itemView.visibility = View.GONE
@@ -72,14 +75,14 @@ class IndividualFormAdapter(private var context: Context,
             holder.itemView.layoutParams = layoutParams
         }
 
-        holder.booleanAnswer.setOnCheckedChangeListener { group, checkedId ->
-            if (holder.rbYes.id == checkedId) {
+        questionItemBinding.booleanAnswer.setOnCheckedChangeListener { group, checkedId ->
+            if ( questionItemBinding.rbYes.id == checkedId) {
                 var answerModel = AnswerModel(description = "true", value = 0)
                 if(question.id == 1){
                     listener?.selected(true)
                 }
                 saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = true)
-            } else if (holder.rbNo.id == checkedId) {
+            } else if ( questionItemBinding.rbNo.id == checkedId) {
                 var answerModel = AnswerModel(description = "false", value = 0)
                 if(question.id == 1) {
                     listener?.selected(false)
@@ -88,7 +91,7 @@ class IndividualFormAdapter(private var context: Context,
             }
         }
 
-        holder.timeScoreEt.addTextChangedListener(object : TextWatcher {
+        questionItemBinding.timeScoreEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence, start: Int, count: Int,
                 after: Int
@@ -112,7 +115,7 @@ class IndividualFormAdapter(private var context: Context,
             }
         })
 
-        holder.textValueEt.addTextChangedListener(object : TextWatcher {
+        questionItemBinding.textValueEt.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(
                 s: CharSequence, start: Int, count: Int,
                 after: Int
@@ -139,16 +142,16 @@ class IndividualFormAdapter(private var context: Context,
 
         when (question.type) {
             AnswersEnum.TF.path -> {
-                holder.booleanAnswer.visibility = View.VISIBLE
+                questionItemBinding.booleanAnswer.visibility = View.VISIBLE
             }
             AnswersEnum.MULTIPLE_SELECT.path -> {
-                holder.rateLy.visibility = View.VISIBLE
-                holder.descriptionRateTv.visibility = View.VISIBLE
-                holder.descriptionRateTv.text = question.content?.description
-                holder.checkboxAnswers.visibility = View.VISIBLE
-                holder.checkboxAnswers.removeAllViews()
-                holder.radioAnswers.visibility = View.VISIBLE
-                holder.radioAnswers.removeAllViews()
+                questionItemBinding.rateLy.visibility = View.VISIBLE
+                questionItemBinding.descriptionRateTv.visibility = View.VISIBLE
+                questionItemBinding.descriptionRateTv.text = question.content?.description
+                questionItemBinding.checkboxAnswers.visibility = View.VISIBLE
+                questionItemBinding.checkboxAnswers.removeAllViews()
+                questionItemBinding.radioAnswers.visibility = View.VISIBLE
+                questionItemBinding.radioAnswers.removeAllViews()
 
                 val params: LinearLayout.LayoutParams =
                     LinearLayout.LayoutParams(
@@ -167,17 +170,17 @@ class IndividualFormAdapter(private var context: Context,
 
                     when {
                         assessmentId == 2 -> {
-                            holder.descriptionTv.visibility = View.GONE
-                            holder.descriptionRateTv.visibility = View.GONE
+                            questionItemBinding.descriptionTv.visibility = View.GONE
+                            questionItemBinding.descriptionRateTv.visibility = View.GONE
                             val radioButton = RadioButton(context)
                             radioButton.text =
                                 if (!a.description.isNullOrBlank()) a.description else ""
                             radioButton.layoutDirection = View.LAYOUT_DIRECTION_RTL
                             radioButton.layoutParams = params
-                            holder.radioAnswers.addView(radioButton)
-                            holder.radioAnswers.addView(v)
+                            questionItemBinding.radioAnswers.addView(radioButton)
+                            questionItemBinding.radioAnswers.addView(v)
 
-                            holder.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
+                            questionItemBinding.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
                                 var rb = radioGroup.find<RadioButton>(i)
                                 var answerModel : AnswerModel? = null
                                 question!!.content!!.items.forEach {
@@ -199,8 +202,8 @@ class IndividualFormAdapter(private var context: Context,
                                 if (!a.description.isNullOrBlank()) a.description else ""
                             checkbox.layoutDirection = View.LAYOUT_DIRECTION_RTL
                             checkbox.layoutParams = params
-                            holder.checkboxAnswers.addView(checkbox)
-                            holder.checkboxAnswers.addView(v)
+                            questionItemBinding.checkboxAnswers.addView(checkbox)
+                            questionItemBinding.checkboxAnswers.addView(v)
 
                             checkbox.setOnCheckedChangeListener { compoundButton, b ->
                                 var answer : AnswerModel? = null
@@ -232,14 +235,14 @@ class IndividualFormAdapter(private var context: Context,
 
                             rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
                             rb.layoutParams = params
-                            holder.radioAnswers.addView(rb)
-                            holder.radioAnswers.addView(v)
+                            questionItemBinding.radioAnswers.addView(rb)
+                            questionItemBinding.radioAnswers.addView(v)
 
                             rb.setOnCheckedChangeListener { compoundButton, b ->
                                 if (b) {
                                     if (rb.text.toString() == "Another assistive device") {
-                                        holder.textValueEt.visibility = View.VISIBLE
-                                        holder.textValueEt.setText("")
+                                        questionItemBinding.textValueEt.visibility = View.VISIBLE
+                                        questionItemBinding.textValueEt.setText("")
                                     } else {
                                         var answer : AnswerModel? = null
                                         question!!.content!!.items.forEach {
@@ -247,7 +250,7 @@ class IndividualFormAdapter(private var context: Context,
                                                 answer = it
                                             }
                                         }
-                                        holder.textValueEt.visibility = View.GONE
+                                        questionItemBinding.textValueEt.visibility = View.GONE
                                         saveAnswer?.saveInArray(
                                             id = question.id, answer = answer!!,
                                             recordValue = true
@@ -260,24 +263,24 @@ class IndividualFormAdapter(private var context: Context,
                 }
             }
             AnswersEnum.FILL_IN.path -> {
-                holder.timeScoreEt.visibility = View.VISIBLE
+                questionItemBinding.timeScoreEt.visibility = View.VISIBLE
                 if (!question.content?.description.isNullOrEmpty()) {
-                    holder.descriptionTv.visibility = View.VISIBLE
-                    holder.descriptionTv.text = Html.fromHtml(question.content?.description)
+                    questionItemBinding.descriptionTv.visibility = View.VISIBLE
+                    questionItemBinding.descriptionTv.text = Html.fromHtml(question.content?.description)
                 } else {
-                    holder.descriptionTv.visibility = View.GONE
+                    questionItemBinding.descriptionTv.visibility = View.GONE
                 }
             }
             AnswersEnum.RATE.path -> {
                 if (!question.content?.description.isNullOrBlank()) {
-                    holder.rateLy.visibility = View.VISIBLE
-                    holder.descriptionRateTv.visibility = View.VISIBLE
-                    holder.descriptionRateTv.text = question.content?.description
+                    questionItemBinding.rateLy.visibility = View.VISIBLE
+                    questionItemBinding.descriptionRateTv.visibility = View.VISIBLE
+                    questionItemBinding.descriptionRateTv.text = question.content?.description
                 } else {
-                    holder.rateLy.visibility = View.GONE
-                    holder.descriptionRateTv.visibility = View.GONE
+                    questionItemBinding.rateLy.visibility = View.GONE
+                    questionItemBinding.descriptionRateTv.visibility = View.GONE
                 }
-                holder.radioAnswers.visibility = View.VISIBLE
+                questionItemBinding.radioAnswers.visibility = View.VISIBLE
 
                 val params: LinearLayout.LayoutParams =
                     LinearLayout.LayoutParams(
@@ -288,10 +291,10 @@ class IndividualFormAdapter(private var context: Context,
 
                 if (question.content?.items != null) {
                     if (assessmentId == 4 && question!!.content!!.items.size == 0) {
-                        holder.seekElements.visibility = View.VISIBLE
-                        holder.seekContent.visibility = View.VISIBLE
+                        questionItemBinding.seekElements.visibility = View.VISIBLE
+                        questionItemBinding.seekContent.visibility = View.VISIBLE
 
-                        holder.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                        questionItemBinding.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
                             var pval = 0
                             override fun onProgressChanged(
                                 seekBar: SeekBar,
@@ -306,7 +309,7 @@ class IndividualFormAdapter(private var context: Context,
                             }
 
                             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                                holder.seekNumberTv.text = "Level : $pval"
+                                questionItemBinding.seekNumberTv.text = "Level : $pval"
                                 var answer = AnswerModel(description = "$pval", value = 0)
                                 saveAnswer?.saveInArray(
                                     id = question.id,
@@ -324,7 +327,7 @@ class IndividualFormAdapter(private var context: Context,
                             )
                             v.setBackgroundColor(context.getColor(R.color.button_gray))
                             if (question!!.content!!.items[0] != q && question!!.content!!.items.size > 1) {
-                                holder.radioAnswers.addView(v)
+                                questionItemBinding.radioAnswers.addView(v)
                             }
 
                             if (q.description.length != 1 || q.description.length != 2) {
@@ -332,13 +335,13 @@ class IndividualFormAdapter(private var context: Context,
                                 rb.text = "${q.description}"
                                 rb.layoutDirection = View.LAYOUT_DIRECTION_RTL
                                 rb.layoutParams = params
-                                holder.radioAnswers.addView(rb)
+                                questionItemBinding.radioAnswers.addView(rb)
                             }
                         }
                     }
                 }
 
-                holder.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
+                questionItemBinding.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
                     var rb = radioGroup.find<RadioButton>(i)
                     var pos: Int = -1
                     for (i in 0 until question!!.content!!.items.size) {
@@ -361,21 +364,5 @@ class IndividualFormAdapter(private var context: Context,
         return questions.size
     }
 
-    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val questionTv: TextView = v.findViewById(R.id.questionTv)
-        val booleanAnswer: RadioGroup = v.findViewById(R.id.booleanAnswer)
-        val textValueEt: EditText = v.findViewById(R.id.textValueEt)
-        val timeScoreEt: EditText = v.findViewById(R.id.timeScoreEt)
-        val descriptionTv: TextView = v.findViewById(R.id.descriptionTv)
-        val rbYes: RadioButton = v.findViewById(R.id.rbYes)
-        var rbNo: RadioButton = v.findViewById(R.id.rbNo)
-        val rateLy: LinearLayout = v.findViewById(R.id.rateLy)
-        val descriptionRateTv: TextView = v.findViewById(R.id.descriptionRateTv)
-        val radioAnswers: RadioGroup = v.findViewById(R.id.radioAnswers)
-        val checkboxAnswers: LinearLayout = v.findViewById(R.id.checkboxAnswers)
-        val seekElements : LinearLayout = v.findViewById(R.id.seekElements)
-        val seekContent : LinearLayout = v.findViewById(R.id.seekContent)
-        val seekNumberTv : TextView = v.findViewById(R.id.seekNumberTv)
-        val seekBar : SeekBar = v.findViewById(R.id.seekBar)
-    }
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {}
 }

@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5"
-                android:text="Name:" />
+                android:text="@string/name" />
 
             <TextView
                 android:id="@+id/nameTv"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5"
-                android:text="Position:" />
+                android:text="@string/position" />
 
             <TextView
                 android:id="@+id/positionTv"
@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5"
-                android:text="Email:" />
+                android:text="@string/email_second_option" />
 
             <TextView
                 android:id="@+id/emailTv"
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5"
-                android:text="Phone:" />
+                android:text="@string/phone" />
 
             <TextView
                 android:id="@+id/phoneTv"
@@ -144,7 +144,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5"
-                android:text="Extension:" />
+                android:text="@string/extension" />
 
             <TextView
                 android:id="@+id/extensionTv"
@@ -172,7 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/margin_5"
-                android:text="Fax:" />
+                android:text="@string/fax" />
 
             <TextView
                 android:id="@+id/faxTv"

@@ -34,5 +34,11 @@
     <string name="example_password_text">******</string>
     <string name="login_email_error">Check the information entered!</string>
     <string name="back">Back</string>
+    <string name="name">Name:</string>
+    <string name="position">Position:</string>
+    <string name="email_second_option">Email:</string>
+    <string name="phone">Phone:</string>
+    <string name="extension">Extension:</string>
+    <string name="fax">Fax:</string>
 
 </resources>

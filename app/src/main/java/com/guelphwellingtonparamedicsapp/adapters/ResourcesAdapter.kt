@@ -20,6 +20,8 @@ import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.ResourceModel
 import com.squareup.picasso.Picasso
 import android.app.Activity
+import androidx.databinding.DataBindingUtil
+import com.guelphwellingtonparamedicsapp.databinding.ResourceItemBinding
 import com.guelphwellingtonparamedicsapp.fragments.ListContactsFragment
 
 
@@ -27,14 +29,15 @@ class ResourcesAdapter(private var context: Context,
                        private var resourcesList: ArrayList<ResourceModel>
 ) : RecyclerView.Adapter<ResourcesAdapter.ViewHolder>() {
 
-    var activity = context as Activity
+    private var activity = context as Activity
+    private lateinit var resourceItemBinding : ResourceItemBinding
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.resource_item, parent, false)
-        return ViewHolder(v)
+        resourceItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.resource_item, parent, false)
+        return ViewHolder(resourceItemBinding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -43,9 +46,9 @@ class ResourcesAdapter(private var context: Context,
         Picasso
             .get()
             .load(resource.logo)
-            .into(holder.image)
+            .into(resourceItemBinding.resourceImage)
 
-        holder.title.text = resource.location
+        resourceItemBinding.resourceNameTv.text = resource.location
 
         holder.itemView.setOnClickListener {
             if (resource.contacts != null){
@@ -60,8 +63,5 @@ class ResourcesAdapter(private var context: Context,
         return resourcesList.size
     }
 
-    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
-        val image : ImageView = v.findViewById(R.id.resourceImage)
-        val title : TextView = v.findViewById(R.id.resourceNameTv)
-    }
+    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){}
 }

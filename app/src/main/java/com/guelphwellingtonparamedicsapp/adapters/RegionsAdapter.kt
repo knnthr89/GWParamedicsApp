@@ -6,27 +6,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
+import com.guelphwellingtonparamedicsapp.databinding.RegionsItemBinding
 import com.guelphwellingtonparamedicsapp.models.RegionModel
 import com.guelphwellingtonparamedicsapp.models.ResourceModel
 
 class RegionsAdapter (private var context: Context, private var regionList: ArrayList<RegionModel>) : RecyclerView.Adapter<RegionsAdapter.ViewHolder>(){
 
+    private lateinit var regionsItemBinding: RegionsItemBinding
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.regions_item, parent, false)
-        return ViewHolder(v)
+
+        regionsItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.regions_item, parent, false)
+
+        return ViewHolder(regionsItemBinding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val resource = regionList[position]
 
-        holder.titleTv.text = resource.name
+        regionsItemBinding.titleTv.text = resource.name
 
         showResources(resourcesList = resource.resources, holder)
 
@@ -36,23 +42,20 @@ class RegionsAdapter (private var context: Context, private var regionList: Arra
         return regionList.size
     }
 
-    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
-        val titleTv : TextView = v.findViewById(R.id.titleTv)
-        val resourcesRv : RecyclerView = v.findViewById(R.id.resourcesRv)
-    }
+    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){}
 
     private fun showResources(resourcesList : ArrayList<ResourceModel>, holder : ViewHolder){
         var adapter = ResourcesAdapter(context, resourcesList)
         var mLayoutManager = LinearLayoutManager(context)
         mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-        holder.resourcesRv.layoutManager = mLayoutManager
-        holder.resourcesRv.addItemDecoration(
+        regionsItemBinding.resourcesRv.layoutManager = mLayoutManager
+        regionsItemBinding.resourcesRv.addItemDecoration(
             DividerItemDecoration(
                 context,
                 DividerItemDecoration.VERTICAL
             )
         )
-        holder.resourcesRv.setHasFixedSize(true)
-        holder.resourcesRv.adapter = adapter
+        regionsItemBinding.resourcesRv.setHasFixedSize(true)
+        regionsItemBinding.resourcesRv.adapter = adapter
     }
 }

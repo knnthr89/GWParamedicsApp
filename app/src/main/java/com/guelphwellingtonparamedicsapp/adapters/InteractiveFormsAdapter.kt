@@ -8,8 +8,10 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.guelphwellingtonparamedicsapp.R
+import com.guelphwellingtonparamedicsapp.databinding.InteractiveFormItemBinding
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 
@@ -17,6 +19,8 @@ class InteractiveFormsAdapter(private var context: Context,
                               private var interactiveFormsList: ArrayList<InteractiveFormModel>,
                               private var listener: SelectedInteractiveForm
 ) : RecyclerView.Adapter<InteractiveFormsAdapter.ViewHolder>() {
+
+    private lateinit var interactiveFormItemBinding: InteractiveFormItemBinding
 
     interface SelectedInteractiveForm {
         fun selected(id: Int)
@@ -26,20 +30,22 @@ class InteractiveFormsAdapter(private var context: Context,
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-       val v = LayoutInflater.from(parent.context).inflate(R.layout.interactive_form_item, parent, false)
-       return ViewHolder(v)
+
+       interactiveFormItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.interactive_form_item, parent, false)
+
+       return ViewHolder(interactiveFormItemBinding.root)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val interactiveForm = interactiveFormsList[position]
 
-        holder.titleTextView.text = interactiveForm.title
+        interactiveFormItemBinding.titleTextView.text = interactiveForm.title
 
         holder.itemView.setOnClickListener {
             listener?.selected(interactiveForm.id)
         }
 
-        holder.imageButton.setOnClickListener {
+        interactiveFormItemBinding.imageButton.setOnClickListener {
             listener?.selected(interactiveForm.id)
         }
 
@@ -50,8 +56,5 @@ class InteractiveFormsAdapter(private var context: Context,
         return interactiveFormsList.size
     }
 
-    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){
-       var titleTextView : TextView = v.findViewById(R.id.titleTextView)
-        var imageButton : ImageButton = v.findViewById(R.id.imageButton)
-    }
+    inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v){}
 }
