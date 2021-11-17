@@ -33,5 +33,6 @@
     <string name="example_email_text">example@email.com</string>
     <string name="example_password_text">******</string>
     <string name="login_email_error">Check the information entered!</string>
+    <string name="back">Back</string>
 
 </resources>

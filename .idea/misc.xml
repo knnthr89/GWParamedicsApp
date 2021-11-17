@@ -16,6 +16,8 @@
         <entry key="..\:/Users/kenm_/AndroidStudioProjects/GuelphWellingtonParamedicsApp/app/src/main/res/layout/interactive_form_item.xml" value="0.19947916666666668" />
         <entry key="..\:/Users/kenm_/AndroidStudioProjects/GuelphWellingtonParamedicsApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.203125" />
         <entry key="..\:/Users/kenm_/AndroidStudioProjects/GuelphWellingtonParamedicsApp/app/src/main/res/xml/network_security_config.xml" value="0.103125" />
+        <entry key="app/src/main/res/drawable-v24/ic_gray_back.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/drawable/actionbar_background.xml" value="0.21302083333333333" />
         <entry key="app/src/main/res/drawable/box_border_gray.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable/ic_no_internet.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.18802083333333333" />
@@ -24,6 +26,7 @@
         <entry key="app/src/main/res/layout/activity_offline.xml" value="0.375" />
         <entry key="app/src/main/res/layout/answer_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/checkbox_answer_item.xml" value="0.18802083333333333" />
+        <entry key="app/src/main/res/layout/contact_item.xml" value="0.5" />
         <entry key="app/src/main/res/layout/fragment_assessments.xml" value="0.2" />
         <entry key="app/src/main/res/layout/fragment_contacts.xml" value="0.2578125" />
         <entry key="app/src/main/res/layout/fragment_individual_form.xml" value="0.18432971014492755" />
