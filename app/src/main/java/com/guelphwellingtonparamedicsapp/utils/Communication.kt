@@ -46,6 +46,12 @@ class Communication(var context: Context?) {
                         obj.put("data", res)
                         communicationListener?.onCommunicationSuccess(path, obj)
                     }
+                    CommunicationPath.RESOURCE_REGIONS -> {
+                        val res = JSONArray(response)
+                        val obj = JSONObject()
+                        obj.put("data", res)
+                        communicationListener?.onCommunicationSuccess(path, obj)
+                    }
                     else -> {
                         val res = JSONObject(response)
                         communicationListener?.onCommunicationSuccess(path, res)

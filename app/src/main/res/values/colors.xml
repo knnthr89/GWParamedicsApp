@@ -12,4 +12,5 @@
     <color name="button_gray">#c6c6c6</color>
     <color name="light_gray">#F0F0F0</color>
     <color name="title_options_login">#9a9a9a</color>
+    <color name="background_item">#08589D</color>
 </resources>

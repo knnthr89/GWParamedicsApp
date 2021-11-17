@@ -173,10 +173,5 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
             return mInstance!!
         }
     }
-
-    @Throws(JSONException::class)
-    fun toJsonObject(jsonString: String): JSONObject {
-        return JSONObject(jsonString)
-    }
 }
 

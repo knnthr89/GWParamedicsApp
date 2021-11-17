@@ -70,4 +70,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.lifecycleVersion"
     implementation "androidx.fragment:fragment-ktx:$rootProject.fragmentVersion"
     implementation "org.jetbrains.anko:anko:$rootProject.ankoVersion"
+
+    //imageview
+    implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
 }
