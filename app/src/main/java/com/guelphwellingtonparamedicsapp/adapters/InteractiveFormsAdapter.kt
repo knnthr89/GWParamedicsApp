@@ -13,21 +13,13 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 
-class InteractiveFormsAdapter() : RecyclerView.Adapter<InteractiveFormsAdapter.ViewHolder>() {
-
-    private lateinit var context: Context
-    private lateinit var interactiveFormsList: ArrayList<InteractiveFormModel>
-
-    private var listener : SelectedInteractiveForm? = null
+class InteractiveFormsAdapter(private var context: Context,
+                              private var interactiveFormsList: ArrayList<InteractiveFormModel>,
+                              private var listener: SelectedInteractiveForm
+) : RecyclerView.Adapter<InteractiveFormsAdapter.ViewHolder>() {
 
     interface SelectedInteractiveForm {
         fun selected(id: Int)
-    }
-
-    constructor(context: Context, interactiveFormsList : ArrayList<InteractiveFormModel>, listener : SelectedInteractiveForm) : this() {
-        this.context = context
-        this.interactiveFormsList = interactiveFormsList
-        this.listener = listener
     }
 
     override fun onCreateViewHolder(

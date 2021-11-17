@@ -25,14 +25,15 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import com.guelphwellingtonparamedicsapp.models.AnswerModel
 
 
-class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
-    private lateinit var context: Context
-    private lateinit var questions: ArrayList<QuestionModel>
-    private var listener: SelectedAnswer? = null
-    private var saveAnswer: SaveAnswer? = null
+class IndividualFormAdapter(private var context: Context,
+                            private var questions: ArrayList<QuestionModel>,
+                            private var listener: SelectedAnswer,
+                            private var saveAnswer: SaveAnswer,
+                            private var assessmentId: Int,
+                            private var saveAnswersList: SaveAnswerList
+) : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
+
     private var answersSelected: ArrayList<AnswerModel> = ArrayList()
-    private var assessmentId: Int = 0
-    private var saveAnswersList : SaveAnswerList? = null
 
     interface SaveAnswerList {
         fun saveAnswers(id : Int, answers : ArrayList<AnswerModel>)
@@ -44,22 +45,6 @@ class IndividualFormAdapter() : RecyclerView.Adapter<IndividualFormAdapter.ViewH
 
     interface SelectedAnswer {
         fun selected(answer: Boolean)
-    }
-
-    constructor(
-        context: Context,
-        questions: ArrayList<QuestionModel>,
-        listener: SelectedAnswer,
-        saveAnswer: SaveAnswer,
-        assessmentId: Int,
-        saveAnswersList : SaveAnswerList
-    ) : this() {
-        this.context = context
-        this.questions = questions
-        this.listener = listener
-        this.saveAnswer = saveAnswer
-        this.assessmentId = assessmentId
-        this.saveAnswersList = saveAnswersList
     }
 
     override fun onCreateViewHolder(

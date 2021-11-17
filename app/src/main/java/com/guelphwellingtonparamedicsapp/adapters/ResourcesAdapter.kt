@@ -23,10 +23,10 @@ import android.app.Activity
 import com.guelphwellingtonparamedicsapp.fragments.ListContactsFragment
 
 
-class ResourcesAdapter(context : Context, resourcesList : ArrayList<ResourceModel>) : RecyclerView.Adapter<ResourcesAdapter.ViewHolder>() {
+class ResourcesAdapter(private var context: Context,
+                       private var resourcesList: ArrayList<ResourceModel>
+) : RecyclerView.Adapter<ResourcesAdapter.ViewHolder>() {
 
-    private var context: Context = context
-    private var resourcesList : ArrayList<ResourceModel> = resourcesList
     var activity = context as Activity
 
     override fun onCreateViewHolder(

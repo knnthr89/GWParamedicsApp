@@ -13,10 +13,7 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.models.RegionModel
 import com.guelphwellingtonparamedicsapp.models.ResourceModel
 
-class RegionsAdapter (context: Context, regionList: ArrayList<RegionModel>) : RecyclerView.Adapter<RegionsAdapter.ViewHolder>(){
-
-    private var context: Context = context
-    private var regionList : ArrayList<RegionModel> = regionList
+class RegionsAdapter (private var context: Context, private var regionList: ArrayList<RegionModel>) : RecyclerView.Adapter<RegionsAdapter.ViewHolder>(){
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

@@ -12,10 +12,10 @@ import com.guelphwellingtonparamedicsapp.models.ContactModel
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.databinding.ContactItemBinding
 
-class ContactsAdapter(context: Context, contactsList: ArrayList<ContactModel>) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>(){
+class ContactsAdapter(private var context: Context,
+                      private var contactsList: ArrayList<ContactModel>
+) : RecyclerView.Adapter<ContactsAdapter.ViewHolder>(){
 
-    private var context : Context = context
-    private var contactsList : ArrayList<ContactModel> = contactsList
     private lateinit var contactItemBinding : ContactItemBinding
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactsAdapter.ViewHolder {
