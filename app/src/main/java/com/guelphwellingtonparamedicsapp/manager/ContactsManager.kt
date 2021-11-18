@@ -2,6 +2,13 @@ package com.guelphwellingtonparamedicsapp.manager
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.google.gson.Gson
+import com.guelphwellingtonparamedicsapp.models.AreaModel
+import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
+import com.guelphwellingtonparamedicsapp.models.RegionModel
 import com.guelphwellingtonparamedicsapp.utils.Communication
 import com.guelphwellingtonparamedicsapp.utils.CommunicationPath
 import org.json.JSONArray
@@ -15,7 +22,7 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
 
 
     interface ContactsGroupsListener {
-        fun onContactsGroupsSuccess(message: String)
+        fun onContactsGroupsSuccess(areasList: LiveData<List<AreaModel>>)
         fun onContactsGroupsFail(message: String, code: Int?)
     }
 
@@ -38,7 +45,7 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
     }
 
     override fun onCommunicationError(path: CommunicationPath, error: String, code: Int?) {
-        when(path) {
+        when (path) {
             CommunicationPath.CONTACT_GROUPS -> {
                 contactsGroupsListener?.onContactsGroupsFail(error, code)
             }
@@ -46,7 +53,25 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
     }
 
     private fun processContactGroups(json: JSONObject) {
-        contactsGroupsListener?.onContactsGroupsSuccess(json.toString())
+        val gson = Gson()
+        val areasList = ArrayList<AreaModel>()
+        val areasListLiveData = MutableLiveData<List<AreaModel>>()
+
+        var jsonArray = json.getJSONArray("data")
+
+        for (i in 0 until jsonArray.length()) {
+            val o: JSONObject = jsonArray.getJSONObject(i)
+            val objModel: AreaModel = gson.fromJson(
+                o.toString(),
+                AreaModel::class.java
+            )
+
+            areasList.add(objModel)
+        }
+
+        areasListLiveData.value = areasList
+
+        contactsGroupsListener?.onContactsGroupsSuccess(areasListLiveData)
     }
 
     companion object {

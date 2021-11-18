@@ -38,8 +38,9 @@ class Communication(var context: Context?) {
             if (response.isNotBlank()) {
                 when (path) {
                     CommunicationPath.CONTACT_GROUPS -> {
+                        val res = JSONArray(response)
                         val obj = JSONObject()
-                        obj.put("data", response)
+                        obj.put("data", res)
                         communicationListener?.onCommunicationSuccess(path, obj)
                     }
                     CommunicationPath.INTERACTIVE_FORMS -> {
