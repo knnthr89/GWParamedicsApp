@@ -2,18 +2,24 @@ package com.guelphwellingtonparamedicsapp.manager
 
 import android.annotation.SuppressLint
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.guelphwellingtonparamedicsapp.models.RegionModel
 import com.guelphwellingtonparamedicsapp.utils.Communication
 import com.guelphwellingtonparamedicsapp.utils.CommunicationPath
 import org.json.JSONObject
+import com.guelphwellingtonparamedicsapp.entities.User
+
+
+
 
 class ResourcesManager(var context: Context) : Communication.CommunicationListener {
 
     private var getResourcesListener : GetResourcesListener? = null
 
     interface GetResourcesListener {
-        fun onResourcesSuccess(regionModelList : ArrayList<RegionModel>)
+        fun onResourcesSuccess(regionModelList : LiveData<List<RegionModel>>)
         fun onResourcesFail(message: String, code: Int?)
     }
 
@@ -45,8 +51,11 @@ class ResourcesManager(var context: Context) : Communication.CommunicationListen
 
     fun processGetAllResources(response: JSONObject){
         val gson = Gson()
-        var arrayRegionModel : ArrayList<RegionModel> = ArrayList()
-        var jsonArray= response.getJSONArray("data")
+
+        val regionsList = ArrayList<RegionModel>()
+        val regionsListLiveData = MutableLiveData<List<RegionModel>>()
+
+        var jsonArray = response.getJSONArray("data")
 
         for (i in 0 until jsonArray.length()) {
             val o: JSONObject = jsonArray.getJSONObject(i)
@@ -54,11 +63,13 @@ class ResourcesManager(var context: Context) : Communication.CommunicationListen
                 o.toString(),
                 RegionModel::class.java
             )
+            regionsList.add(objModel)
 
-            arrayRegionModel.add(objModel)
         }
 
-        getResourcesListener?.onResourcesSuccess(arrayRegionModel)
+        regionsListLiveData.value = regionsList
+
+        getResourcesListener?.onResourcesSuccess(regionsListLiveData)
 
     }
 

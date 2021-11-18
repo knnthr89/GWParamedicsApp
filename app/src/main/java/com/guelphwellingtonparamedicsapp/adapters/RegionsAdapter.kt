@@ -15,7 +15,7 @@ import com.guelphwellingtonparamedicsapp.databinding.RegionsItemBinding
 import com.guelphwellingtonparamedicsapp.models.RegionModel
 import com.guelphwellingtonparamedicsapp.models.ResourceModel
 
-class RegionsAdapter (private var context: Context, private var regionList: ArrayList<RegionModel>) : RecyclerView.Adapter<RegionsAdapter.ViewHolder>(){
+class RegionsAdapter (private var context: Context, private var regionList: List<RegionModel>) : RecyclerView.Adapter<RegionsAdapter.ViewHolder>(){
 
     private lateinit var regionsItemBinding: RegionsItemBinding
 

@@ -9,15 +9,17 @@ import org.json.JSONObject
 import java.net.CacheResponse
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.daos.UserDao
+import com.guelphwellingtonparamedicsapp.database.AppDatabase
 
 class Communication(var context: Context?) {
 
-    private var mUserDao: UserDao? = null
+
+    private val db = AppDatabase.getDatabase(context = context!!)
+    private var mUserDao: UserDao? = db?.userDao()
 
     companion object {
-        var SERVER = "http://10.0.2.2:5000/"
-        //var SERVER = "http://1b68-2607-fea8-1be0-1bcb-514e-55cb-3a02-516.ngrok.io/"
-        var TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijk3MGExMjA5LTg4ZjAtNDAxOS04Mzk1LTBkZmFmNjVmNTA1MCIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6ImFkbWluQGd1ZWxwaC5jYSIsImp0aSI6ImVkZjVlMjA0LTZlOWQtNDdjMy04N2RmLWViZjZiOGIyZTZkYiIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNjM3NjAwMzk2LCJpc3MiOiJQYXJhbWVkaWNBUEkiLCJhdWQiOiJQYXJhbWVkaWNBUEkifQ.i9n2l8VtYjRjnFkl_W_tRP4oaaTmd5cPm4xeVdwSHw8"
+        //var SERVER = "http://10.0.2.2:5000/"
+        var SERVER = "http://49d3-2607-fea8-1be0-1bcb-7c4a-f1b7-896e-7d6b.ngrok.io/"
     }
 
     private var communicationListener: CommunicationListener? = null
@@ -142,7 +144,6 @@ class Communication(var context: Context?) {
 
         val errorListener = Response.ErrorListener { error ->
             val message: String?
-            Log.e("ENTRA", "error ${error.networkResponse.statusCode}")
             when (error) {
                 is TimeoutError -> {
                     message = context?.getString(R.string.volley_timeout_error)
@@ -187,7 +188,7 @@ class Communication(var context: Context?) {
             override fun getHeaders(): Map<String, String> {
                 val headers = HashMap<String, String>()
                 headers["content-type"] = "application/json"
-                headers["Authorization"] = "Bearer $TOKEN"
+                headers["Authorization"] = "Bearer ${if(path == CommunicationPath.LOGIN) "" else mUserDao!!.getUser()[0].token}"
                 return headers
             }
 
