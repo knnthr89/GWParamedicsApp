@@ -18,8 +18,8 @@ class Communication(var context: Context?) {
     private var mUserDao: UserDao? = db?.userDao()
 
     companion object {
-        //var SERVER = "http://10.0.2.2:5000/"
-        var SERVER = "http://49d3-2607-fea8-1be0-1bcb-7c4a-f1b7-896e-7d6b.ngrok.io/"
+        var SERVER = "http://10.0.2.2:5000/"
+        //var SERVER = "http://49d3-2607-fea8-1be0-1bcb-7c4a-f1b7-896e-7d6b.ngrok.io/"
     }
 
     private var communicationListener: CommunicationListener? = null

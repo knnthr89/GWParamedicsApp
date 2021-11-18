@@ -52,16 +52,13 @@ class ResourcesFragment : Fragment() {
                 RegionsViewModel::class.java
             )
 
-        lifecycleScope.launch {
-            mRegionsViewModel?.getAllRegionsAsync(requireContext())
-                ?.observe(viewLifecycleOwner, { regions ->
-                    var adapter = RegionsAdapter(requireContext(), regions)
-                    var mLayoutManager = LinearLayoutManager(requireContext())
-                    mLayoutManager.orientation = LinearLayoutManager.VERTICAL
-                    fragmentResourcesBinding.resourcesRv.layoutManager = mLayoutManager
-                    fragmentResourcesBinding.resourcesRv.setHasFixedSize(true)
-                    fragmentResourcesBinding.resourcesRv.adapter = adapter
-                })
-        }
+        mRegionsViewModel?.results?.observe(viewLifecycleOwner, { regions ->
+            var adapter = RegionsAdapter(requireContext(), regions)
+            var mLayoutManager = LinearLayoutManager(requireContext())
+            mLayoutManager.orientation = LinearLayoutManager.VERTICAL
+            fragmentResourcesBinding.resourcesRv.layoutManager = mLayoutManager
+            fragmentResourcesBinding.resourcesRv.setHasFixedSize(true)
+            fragmentResourcesBinding.resourcesRv.adapter = adapter
+        })
     }
 }
