@@ -15,8 +15,10 @@ import android.widget.RadioButton
 
 import android.widget.RadioGroup
 import android.text.Editable
+import android.text.InputType
 
 import android.text.TextWatcher
+import android.text.method.DigitsKeyListener
 import android.util.Log
 import android.widget.LinearLayout
 import org.jetbrains.anko.find
@@ -27,19 +29,20 @@ import com.guelphwellingtonparamedicsapp.databinding.QuestionItemBinding
 import com.guelphwellingtonparamedicsapp.models.AnswerModel
 
 
-class IndividualFormAdapter(private var context: Context,
-                            private var questions: ArrayList<QuestionModel>,
-                            private var listener: SelectedAnswer,
-                            private var saveAnswer: SaveAnswer,
-                            private var assessmentId: Int,
-                            private var saveAnswersList: SaveAnswerList
+class IndividualFormAdapter(
+    private var context: Context,
+    private var questions: ArrayList<QuestionModel>,
+    private var listener: SelectedAnswer,
+    private var saveAnswer: SaveAnswer,
+    private var assessmentId: Int,
+    private var saveAnswersList: SaveAnswerList
 ) : RecyclerView.Adapter<IndividualFormAdapter.ViewHolder>() {
 
     private var answersSelected: ArrayList<AnswerModel> = ArrayList()
-    private lateinit var questionItemBinding : QuestionItemBinding
+    private lateinit var questionItemBinding: QuestionItemBinding
 
     interface SaveAnswerList {
-        fun saveAnswers(id : Int, answers : ArrayList<AnswerModel>)
+        fun saveAnswers(id: Int, answers: ArrayList<AnswerModel>)
     }
 
     interface SaveAnswer {
@@ -54,7 +57,12 @@ class IndividualFormAdapter(private var context: Context,
         parent: ViewGroup,
         viewType: Int
     ): ViewHolder {
-        questionItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.question_item, parent, false)
+        questionItemBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.question_item,
+            parent,
+            false
+        )
         return ViewHolder(questionItemBinding.root)
     }
 
@@ -70,21 +78,21 @@ class IndividualFormAdapter(private var context: Context,
             holder.itemView.visibility = View.VISIBLE
             holder.itemView.layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT
             holder.itemView.layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            val layoutParams = (holder.itemView?.layoutParams as? ViewGroup.MarginLayoutParams)
+            val layoutParams = (holder.itemView.layoutParams as? ViewGroup.MarginLayoutParams)
             layoutParams?.setMargins(40, 40, 40, 40)
             holder.itemView.layoutParams = layoutParams
         }
 
         questionItemBinding.booleanAnswer.setOnCheckedChangeListener { group, checkedId ->
-            if ( questionItemBinding.rbYes.id == checkedId) {
+            if (questionItemBinding.rbYes.id == checkedId) {
                 var answerModel = AnswerModel(description = "true", value = 0)
-                if(question.id == 1){
+                if (question.id == 1) {
                     listener?.selected(true)
                 }
                 saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = true)
-            } else if ( questionItemBinding.rbNo.id == checkedId) {
+            } else if (questionItemBinding.rbNo.id == checkedId) {
                 var answerModel = AnswerModel(description = "false", value = 0)
-                if(question.id == 1) {
+                if (question.id == 1) {
                     listener?.selected(false)
                 }
                 saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = false)
@@ -182,13 +190,13 @@ class IndividualFormAdapter(private var context: Context,
 
                             questionItemBinding.radioAnswers.setOnCheckedChangeListener { radioGroup, i ->
                                 var rb = radioGroup.find<RadioButton>(i)
-                                var answerModel : AnswerModel? = null
+                                var answerModel: AnswerModel? = null
                                 question!!.content!!.items.forEach {
-                                    if (it.description == rb.text.toString()){
+                                    if (it.description == rb.text.toString()) {
                                         answerModel = it
                                     }
                                 }
-                                if(rb.isChecked){
+                                if (rb.isChecked) {
                                     saveAnswer?.saveInArray(
                                         id = question.id, answer = answerModel!!,
                                         recordValue = true
@@ -206,9 +214,9 @@ class IndividualFormAdapter(private var context: Context,
                             questionItemBinding.checkboxAnswers.addView(v)
 
                             checkbox.setOnCheckedChangeListener { compoundButton, b ->
-                                var answer : AnswerModel? = null
+                                var answer: AnswerModel? = null
                                 question!!.content!!.items.forEach {
-                                    if(it.description == checkbox.text){
+                                    if (it.description == checkbox.text) {
                                         answer = it
                                     }
                                 }
@@ -225,7 +233,10 @@ class IndividualFormAdapter(private var context: Context,
                                         answersSelected.remove(answer)
                                     }
                                 }
-                                saveAnswersList?.saveAnswers(id = question.id, answers = answersSelected)
+                                saveAnswersList?.saveAnswers(
+                                    id = question.id,
+                                    answers = answersSelected
+                                )
                             }
 
                         }
@@ -244,9 +255,9 @@ class IndividualFormAdapter(private var context: Context,
                                         questionItemBinding.textValueEt.visibility = View.VISIBLE
                                         questionItemBinding.textValueEt.setText("")
                                     } else {
-                                        var answer : AnswerModel? = null
+                                        var answer: AnswerModel? = null
                                         question!!.content!!.items.forEach {
-                                            if(it.description == rb.text.toString()){
+                                            if (it.description == rb.text.toString()) {
                                                 answer = it
                                             }
                                         }
@@ -264,9 +275,23 @@ class IndividualFormAdapter(private var context: Context,
             }
             AnswersEnum.FILL_IN.path -> {
                 questionItemBinding.timeScoreEt.visibility = View.VISIBLE
+                questionItemBinding.timeScoreEt.inputType = InputType.TYPE_CLASS_NUMBER
+
+                var numbers = ArrayList<Int>()
+                if (question.content?.max_score != null) {
+                    questionItemBinding.rangeTv.visibility = View.VISIBLE
+                    questionItemBinding.rangeTv.text = "Range from 0 to ${question.content?.max_score}"
+                    for (i in 0..question.content?.max_score!!) {
+                        numbers.add(i)
+                    }
+                }
+
+                questionItemBinding.timeScoreEt.keyListener =
+                    DigitsKeyListener.getInstance(numbers.toString())
                 if (!question.content?.description.isNullOrEmpty()) {
                     questionItemBinding.descriptionTv.visibility = View.VISIBLE
-                    questionItemBinding.descriptionTv.text = Html.fromHtml(question.content?.description)
+                    questionItemBinding.descriptionTv.text =
+                        Html.fromHtml(question.content?.description)
                 } else {
                     questionItemBinding.descriptionTv.visibility = View.GONE
                 }
@@ -294,7 +319,8 @@ class IndividualFormAdapter(private var context: Context,
                         questionItemBinding.seekElements.visibility = View.VISIBLE
                         questionItemBinding.seekContent.visibility = View.VISIBLE
 
-                        questionItemBinding.seekBar.setOnSeekBarChangeListener(object : OnSeekBarChangeListener {
+                        questionItemBinding.seekBar.setOnSeekBarChangeListener(object :
+                            OnSeekBarChangeListener {
                             var pval = 0
                             override fun onProgressChanged(
                                 seekBar: SeekBar,

@@ -44,9 +44,16 @@
                 android:background="@drawable/box_border_gray"
                 android:maxEms="5"
                 android:padding="@dimen/margin_5"
-                android:visibility="gone" />
+                android:visibility="visible" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/rangeTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_10"
+            android:visibility="gone"/>
 
         <RadioGroup
             android:id="@+id/booleanAnswer"
