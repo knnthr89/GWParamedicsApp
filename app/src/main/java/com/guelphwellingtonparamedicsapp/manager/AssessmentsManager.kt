@@ -73,7 +73,7 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         interactiveFormId: Int,
         patientId: String,
         date: String,
-        answers: HashMap<Int, AnswerModel>
+        answers: HashMap<Int, String>
     ){
 
         val jsonArrayAnswers = JSONArray()
@@ -81,7 +81,7 @@ class AssessmentsManager (var context: Context) : CommunicationListener {
         for(z in answers){
             val jsonArraySingleAnswer = JSONObject()
             jsonArraySingleAnswer.put("questionId", z.key.toString())
-            jsonArraySingleAnswer.put("answer", z.value.description)
+            jsonArraySingleAnswer.put("answer", z.value)
             jsonArrayAnswers.put(jsonArraySingleAnswer)
         }
 

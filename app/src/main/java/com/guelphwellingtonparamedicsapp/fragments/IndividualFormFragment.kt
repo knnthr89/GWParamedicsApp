@@ -25,45 +25,60 @@ import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
-class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatientAssessment, SaveAnswerList {
+class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatientAssessment,
+    SaveAnswerList {
 
-    lateinit var form : IndividualFormModel
+    lateinit var form: IndividualFormModel
     private var questions: ArrayList<QuestionModel> = ArrayList()
-    private var adapter : IndividualFormAdapter? = null
-    private lateinit var fragmentIndividualFormBinding : FragmentIndividualFormBinding
-    private var hashmapAnswers : HashMap<Int, AnswerModel> = HashMap()
-    private var assessmentId : Int = 0
-    private var totalScore : Int = 0
+    private var adapter: IndividualFormAdapter? = null
+    private lateinit var fragmentIndividualFormBinding: FragmentIndividualFormBinding
+    private var hashmapAnswers: HashMap<Int, String> = HashMap()
+    private var assessmentId: Int = 0
+    private var totalScore: Int = 0
+
+    private var hashmapAnswersCheckBox: ArrayList<String> = ArrayList()
+    private var answerScore : HashMap<Int, AnswerModel> = HashMap()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        fragmentIndividualFormBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_individual_form, container, false)
+        fragmentIndividualFormBinding =
+            DataBindingUtil.inflate(inflater, R.layout.fragment_individual_form, container, false)
 
         arguments?.let {
             form = it.getSerializable("model") as IndividualFormModel
         }
-        if(form != null){
+        if (form != null) {
             fillRecyclerView(form)
         }
 
         fragmentIndividualFormBinding.calculateBtn.setOnClickListener {
-            if(hashmapAnswers.isNotEmpty() && fragmentIndividualFormBinding.patientIdEt.text.isNotBlank() && fragmentIndividualFormBinding.paramedicsEt.text.isNotBlank() && fragmentIndividualFormBinding.dateEt.text.isNotBlank()){
+            if (hashmapAnswers.isNotEmpty() && fragmentIndividualFormBinding.patientIdEt.text.isNotBlank() && fragmentIndividualFormBinding.paramedicsEt.text.isNotBlank() && fragmentIndividualFormBinding.dateEt.text.isNotBlank()) {
                 AssessmentsManager.getInstance(requireContext()).setSavePatientAssessment(this)
-                AssessmentsManager.getInstance(requireContext()).savePatientAssessment(totalScore = totalScore, interactiveFormId = form.id, patientId = fragmentIndividualFormBinding.patientIdEt.text.toString(), date = SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()), answers = hashmapAnswers)
-            }else{
+                AssessmentsManager.getInstance(requireContext()).savePatientAssessment(
+                    totalScore = totalScore,
+                    interactiveFormId = form.id,
+                    patientId = fragmentIndividualFormBinding.patientIdEt.text.toString(),
+                    date = SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()),
+                    answers = hashmapAnswers
+                )
+            } else {
                 Toast.makeText(context, R.string.login_email_error, Toast.LENGTH_SHORT).show()
             }
         }
 
-       return fragmentIndividualFormBinding.root
+        return fragmentIndividualFormBinding.root
     }
 
     override fun onStart() {
         super.onStart()
-        fragmentIndividualFormBinding.dateEt.setText(SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(Date()))
+        fragmentIndividualFormBinding.dateEt.setText(
+            SimpleDateFormat("M/dd/yyyy hh:mm:ss").format(
+                Date()
+            )
+        )
     }
 
     fun fillRecyclerView(individualFormModel: IndividualFormModel) {
@@ -76,7 +91,8 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
                     questions.add(y)
                 }
             }
-            adapter = IndividualFormAdapter(requireContext(), questions, this, this, assessmentId, this)
+            adapter =
+                IndividualFormAdapter(requireContext(), questions, this, this, assessmentId, this)
             var mLayoutManager = LinearLayoutManager(requireContext())
             mLayoutManager.orientation = LinearLayoutManager.VERTICAL
             fragmentIndividualFormBinding.formQuestionsRv.layoutManager = mLayoutManager
@@ -86,11 +102,11 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
     }
 
     override fun selected(answer: Boolean) {
-        if(assessmentId == 1){
-            if(hashmapAnswers.size > 1){
+        if (assessmentId == 1) {
+            if (hashmapAnswers.size > 1) {
                 hashmapAnswers.clear()
             }
-            if(answer){
+            if (answer) {
                 val q2 = questions[1]
                 q2.showIt = false
                 val q3 = questions[2]
@@ -100,7 +116,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
                 adapter?.notifyItemChanged(1)
                 adapter?.notifyItemChanged(2)
                 adapter?.notifyItemChanged(3)
-            }else{
+            } else {
                 val q2 = questions[1]
                 q2.showIt = true
                 val q3 = questions[2]
@@ -115,22 +131,33 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
         }
     }
 
-    override fun saveInArray(id: Int, answer: AnswerModel, recordValue : Boolean) {
+    override fun saveInArray(id: Int, answer: AnswerModel, recordValue: Boolean) {
         totalScore = 0
+
         if(recordValue){
-            if(answer.description != "[]"){
-                hashmapAnswers[id] = answer
-            }else {
-                hashmapAnswers.remove(id)
+            if (answer.description != "[]") {
+                answerScore.put(id, answer)
+            } else {
+                answerScore.remove(id)
             }
-        }else {
+        }else{
             hashmapAnswers.remove(id)
         }
 
-        hashmapAnswers.forEach { i, answerModel ->
-            totalScore += answerModel.value
-            Log.e("answers", answerModel.description.toString())
+        if (recordValue) {
+            if (answer.description != "[]") {
+                hashmapAnswers.put(id, answer.description)
+            } else {
+                hashmapAnswers.remove(id)
+            }
+        } else {
+            hashmapAnswers.remove(id)
         }
+
+        answerScore.forEach { t, answerModel ->
+            totalScore += answerModel.value
+        }
+
         Log.e("list", hashmapAnswers.toString())
         Log.e("score", totalScore.toString())
     }
@@ -144,20 +171,42 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
         Toast.makeText(context, "$message , $code", Toast.LENGTH_SHORT).show()
     }
 
-    override fun saveAnswers(id : Int, answers: ArrayList<AnswerModel>) {
+    override fun saveAnswers(id: Int, answers: ArrayList<AnswerModel>) {
         totalScore = 0
-       answers.forEach {
-           if(it.description != "[]"){
-               hashmapAnswers[id] = it
-           }else {
+
+        answers.forEach {
+            if (it.description != "[]") {
+                answerScore.put(id, it)
+            } else {
+                answerScore.remove(id)
+            }
+        }
+
+        answers.forEach {
+            if (it.description != "[]") {
+                if(!hashmapAnswersCheckBox.contains(it.description)){
+                    hashmapAnswersCheckBox.add(it.description)
+                }
+            } else {
+                if(hashmapAnswersCheckBox.contains(it.description)){
+                    hashmapAnswers.remove(id)
+                }
+            }
+        }
+
+        if(hashmapAnswers.isNotEmpty()){
+            hashmapAnswers.put(id, hashmapAnswersCheckBox.toString())
+        }else{
             hashmapAnswers.remove(id)
         }
-       }
-        hashmapAnswers.forEach { i, answerModel ->
+
+        answerScore.forEach { t, answerModel ->
             totalScore += answerModel.value
         }
+
         Log.e("list", hashmapAnswers.toString())
         Log.e("score", totalScore.toString())
+
     }
 
 }
