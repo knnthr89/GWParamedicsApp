@@ -129,6 +129,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
 
         hashmapAnswers.forEach { i, answerModel ->
             totalScore += answerModel.value
+            Log.e("answers", answerModel.description.toString())
         }
         Log.e("list", hashmapAnswers.toString())
         Log.e("score", totalScore.toString())

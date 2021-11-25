@@ -1,6 +1,6 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
-import android.animation.ObjectAnimator
+import android.R.attr
 import android.content.Context
 import android.text.Html
 import android.view.LayoutInflater
@@ -13,13 +13,11 @@ import com.guelphwellingtonparamedicsapp.enums.AnswersEnum
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
 import android.widget.RadioButton
 
-import android.widget.RadioGroup
 import android.text.Editable
 import android.text.InputType
 
 import android.text.TextWatcher
 import android.text.method.DigitsKeyListener
-import android.util.Log
 import android.widget.LinearLayout
 import org.jetbrains.anko.find
 import android.widget.SeekBar
@@ -27,6 +25,10 @@ import android.widget.SeekBar.OnSeekBarChangeListener
 import androidx.databinding.DataBindingUtil
 import com.guelphwellingtonparamedicsapp.databinding.QuestionItemBinding
 import com.guelphwellingtonparamedicsapp.models.AnswerModel
+import android.R.attr.maxLength
+
+import android.text.InputFilter
+import android.text.InputFilter.LengthFilter
 
 
 class IndividualFormAdapter(
@@ -85,17 +87,17 @@ class IndividualFormAdapter(
 
         questionItemBinding.booleanAnswer.setOnCheckedChangeListener { group, checkedId ->
             if (questionItemBinding.rbYes.id == checkedId) {
-                var answerModel = AnswerModel(description = "true", value = 0)
+                var answerModel = AnswerModel(description = "1", value = 0)
                 if (question.id == 1) {
                     listener?.selected(true)
                 }
                 saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = true)
             } else if (questionItemBinding.rbNo.id == checkedId) {
-                var answerModel = AnswerModel(description = "false", value = 0)
+                var answerModel = AnswerModel(description = "0", value = 0)
                 if (question.id == 1) {
                     listener?.selected(false)
                 }
-                saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = false)
+                saveAnswer?.saveInArray(id = question.id, answer = answerModel, recordValue = true)
             }
         }
 
@@ -252,8 +254,8 @@ class IndividualFormAdapter(
                             rb.setOnCheckedChangeListener { compoundButton, b ->
                                 if (b) {
                                     if (rb.text.toString() == "Another assistive device") {
-                                        questionItemBinding.textValueEt.visibility = View.VISIBLE
-                                        questionItemBinding.textValueEt.setText("")
+                                        holder.textValueEt.visibility = View.VISIBLE
+                                        holder.textValueEt.setText("")
                                     } else {
                                         var answer: AnswerModel? = null
                                         question!!.content!!.items.forEach {
@@ -261,7 +263,7 @@ class IndividualFormAdapter(
                                                 answer = it
                                             }
                                         }
-                                        questionItemBinding.textValueEt.visibility = View.GONE
+                                        holder.textValueEt.visibility = View.GONE
                                         saveAnswer?.saveInArray(
                                             id = question.id, answer = answer!!,
                                             recordValue = true
@@ -275,19 +277,26 @@ class IndividualFormAdapter(
             }
             AnswersEnum.FILL_IN.path -> {
                 questionItemBinding.timeScoreEt.visibility = View.VISIBLE
-                questionItemBinding.timeScoreEt.inputType = InputType.TYPE_CLASS_NUMBER
 
                 var numbers = ArrayList<Int>()
-                if (question.content?.max_score != null) {
+                if (question.content?.max_score != null && question.content?.max_score!! > 0) {
+                    questionItemBinding.timeScoreEt.inputType = InputType.TYPE_CLASS_NUMBER
                     questionItemBinding.rangeTv.visibility = View.VISIBLE
                     questionItemBinding.rangeTv.text = "Range from 0 to ${question.content?.max_score}"
+                    var maxLength = 0
                     for (i in 0..question.content?.max_score!!) {
                         numbers.add(i)
+                        if(maxLength < i.toString().length){
+                            maxLength = i.toString().length
+                        }
                     }
+                    val fArray = arrayOfNulls<InputFilter>(1)
+                    fArray[0] = LengthFilter(maxLength)
+                    questionItemBinding.timeScoreEt.filters = fArray
+                    questionItemBinding.timeScoreEt.keyListener =
+                        DigitsKeyListener.getInstance(numbers.toString())
                 }
 
-                questionItemBinding.timeScoreEt.keyListener =
-                    DigitsKeyListener.getInstance(numbers.toString())
                 if (!question.content?.description.isNullOrEmpty()) {
                     questionItemBinding.descriptionTv.visibility = View.VISIBLE
                     questionItemBinding.descriptionTv.text =
@@ -335,7 +344,7 @@ class IndividualFormAdapter(
                             }
 
                             override fun onStopTrackingTouch(seekBar: SeekBar) {
-                                questionItemBinding.seekNumberTv.text = "Level : $pval"
+                                holder.seekNumberTv.text = "Level : $pval"
                                 var answer = AnswerModel(description = "$pval", value = 0)
                                 saveAnswer?.saveInArray(
                                     id = question.id,
@@ -390,5 +399,8 @@ class IndividualFormAdapter(
         return questions.size
     }
 
-    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {}
+    inner class ViewHolder(v: View) : RecyclerView.ViewHolder(v) {
+        val seekNumberTv : TextView = v.findViewById(R.id.seekNumberTv)
+        val textValueEt : EditText = v.findViewById(R.id.textValueEt)
+    }
 }
