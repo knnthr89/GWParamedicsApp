@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.Log
 import com.android.volley.*
 import com.android.volley.toolbox.StringRequest
+import com.google.gson.JsonArray
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.CacheResponse
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.daos.UserDao
 import com.guelphwellingtonparamedicsapp.database.AppDatabase
+import org.json.JSONTokener
 
 class Communication(var context: Context?) {
 
@@ -37,10 +39,23 @@ class Communication(var context: Context?) {
             if (response.isNotBlank()) {
                 when (path) {
                     CommunicationPath.CONTACT_GROUPS -> {
-                        val res = JSONArray(response)
-                        val obj = JSONObject()
-                        obj.put("data", res)
-                        communicationListener?.onCommunicationSuccess(path, obj)
+                        var json = JSONTokener(response).nextValue()
+                        when (json) {
+                            is JSONObject -> {
+                                val res = JSONObject(response)
+                                communicationListener?.onCommunicationSuccess(path, res)
+                            }
+                            is JSONArray -> {
+                                val res = JSONArray(response)
+                                val obj = JSONObject()
+                                obj.put("data", res)
+                                communicationListener?.onCommunicationSuccess(path, obj)
+                            }
+                            else -> {
+                                Log.e("entra", "3")
+                            }
+                        }
+
                     }
                     CommunicationPath.INTERACTIVE_FORMS -> {
                         val res = JSONArray(response)

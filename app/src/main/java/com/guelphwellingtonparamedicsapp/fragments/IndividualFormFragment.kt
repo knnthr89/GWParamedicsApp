@@ -134,6 +134,8 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
     override fun saveInArray(id: Int, answer: AnswerModel, recordValue: Boolean) {
         totalScore = 0
 
+        Log.e("llega", answer.value.toString())
+
         if(recordValue){
             if (answer.description != "[]") {
                 answerScore.put(id, answer)

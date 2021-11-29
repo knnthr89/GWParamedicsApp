@@ -30,6 +30,12 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
         this.contactsGroupsListener = listener
     }
 
+    fun getIndividualArea(id : Int) {
+        val communication = Communication(context)
+        communication.setCommunicationListener(this)
+        communication.getJSON(path = CommunicationPath.CONTACT_GROUPS, id = id)
+    }
+
     fun getContactsGroups() {
         val communication = Communication(context)
         communication.setCommunicationListener(this)
@@ -56,20 +62,29 @@ class ContactsManager(var context: Context) : Communication.CommunicationListene
         val gson = Gson()
         val areasList = ArrayList<AreaModel>()
         val areasListLiveData = MutableLiveData<List<AreaModel>>()
+        var areaModel : AreaModel? = null
 
-        var jsonArray = json.getJSONArray("data")
+        if(json.has("data")){
+            var jsonArray = json.getJSONArray("data")
 
-        for (i in 0 until jsonArray.length()) {
-            val o: JSONObject = jsonArray.getJSONObject(i)
-            val objModel: AreaModel = gson.fromJson(
-                o.toString(),
+            for (i in 0 until jsonArray.length()) {
+                val o: JSONObject = jsonArray.getJSONObject(i)
+                val objModel: AreaModel = gson.fromJson(
+                    o.toString(),
+                    AreaModel::class.java
+                )
+                areasList.add(objModel)
+            }
+
+            areasListLiveData.value = areasList
+        }else{
+           areaModel  = gson.fromJson(
+                json.toString(),
                 AreaModel::class.java
             )
 
-            areasList.add(objModel)
+            areasListLiveData.value = listOf(areaModel)
         }
-
-        areasListLiveData.value = areasList
 
         contactsGroupsListener?.onContactsGroupsSuccess(areasListLiveData)
     }
