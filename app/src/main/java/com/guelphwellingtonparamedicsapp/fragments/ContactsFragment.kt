@@ -1,25 +1,17 @@
 package com.guelphwellingtonparamedicsapp.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.AreasAdapter
-import com.guelphwellingtonparamedicsapp.adapters.RegionsAdapter
 import com.guelphwellingtonparamedicsapp.databinding.FragmentContactsBinding
 import com.guelphwellingtonparamedicsapp.factories.AreaModelFactory
-import com.guelphwellingtonparamedicsapp.manager.ContactsManager
-import com.guelphwellingtonparamedicsapp.manager.ContactsManager.ContactsGroupsListener
-import com.guelphwellingtonparamedicsapp.models.AreaModel
 import com.guelphwellingtonparamedicsapp.viewModels.AreasViewModel
 
 class ContactsFragment : Fragment() {

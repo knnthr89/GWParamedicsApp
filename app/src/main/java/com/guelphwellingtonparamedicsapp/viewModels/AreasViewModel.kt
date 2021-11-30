@@ -7,26 +7,23 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.guelphwellingtonparamedicsapp.database.AppDatabase
-import com.guelphwellingtonparamedicsapp.manager.ContactsManager
 import com.guelphwellingtonparamedicsapp.manager.ContactsManager.ContactsGroupsListener
-import com.guelphwellingtonparamedicsapp.manager.ResourcesManager
-import com.guelphwellingtonparamedicsapp.models.AreaModel
-import com.guelphwellingtonparamedicsapp.models.RegionModel
+import com.guelphwellingtonparamedicsapp.models.DepartmentModel
+import com.guelphwellingtonparamedicsapp.utilities.ContactUtilities
 
 class AreasViewModel(context : Context) : AndroidViewModel(context.applicationContext as Application),
     ContactsGroupsListener {
 
-    private var mAllAreas = MutableLiveData<List<AreaModel>>()
+    private var mAllAreas = MutableLiveData<List<DepartmentModel>>()
 
     init {
-        ContactsManager.getInstance(context = context).setContactsGroupsListener(this)
-        ContactsManager.getInstance(context = context).getContactsGroups()
+        mAllAreas.value = ContactUtilities.initialStaticData().value
     }
 
-    val results: LiveData<List<AreaModel>>
+    val results: LiveData<List<DepartmentModel>>
         get() = mAllAreas
 
-    override fun onContactsGroupsSuccess(areasList: LiveData<List<AreaModel>>) {
+    override fun onContactsGroupsSuccess(areasList: LiveData<List<DepartmentModel>>) {
         this.mAllAreas.value = areasList.value
     }
 

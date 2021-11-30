@@ -40,5 +40,7 @@
     <string name="phone">Phone:</string>
     <string name="extension">Extension:</string>
     <string name="fax">Fax:</string>
+    <string name="website">Website:</string>
+    <string name="work_phone">Work Phone:</string>
 
 </resources>

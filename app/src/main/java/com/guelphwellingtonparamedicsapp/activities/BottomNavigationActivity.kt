@@ -42,11 +42,13 @@ class BottomNavigationActivity : AppCompatActivity(),
     fun showFragment(
         fragment: Fragment,
         addToStack: Boolean = true,
-        model : Serializable? = null
+        model : Serializable? = null,
+        url : String? = null
     ) {
         try {
             val args = Bundle()
             args.putSerializable("model", model)
+            args.putString("url", url)
             val transaction = supportFragmentManager.beginTransaction()
             transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             fragment.arguments = args

@@ -15,10 +15,9 @@ import com.guelphwellingtonparamedicsapp.fragments.ContactsListFragment
 import com.guelphwellingtonparamedicsapp.fragments.IndividualFormFragment
 import com.guelphwellingtonparamedicsapp.manager.ContactsManager
 import com.guelphwellingtonparamedicsapp.manager.ContactsManager.ContactsGroupsListener
-import com.guelphwellingtonparamedicsapp.models.AreaModel
+import com.guelphwellingtonparamedicsapp.models.DepartmentModel
 
-class AreasAdapter(var context : Context, var areasList : List<AreaModel>) : RecyclerView.Adapter<AreasAdapter.ViewHolder>(),
-    ContactsGroupsListener {
+class AreasAdapter(var context : Context, var areasList : List<DepartmentModel>) : RecyclerView.Adapter<AreasAdapter.ViewHolder>() {
 
     private lateinit var areaItemBinding : AreaItemBinding
 
@@ -28,19 +27,14 @@ class AreasAdapter(var context : Context, var areasList : List<AreaModel>) : Rec
     }
 
     override fun onBindViewHolder(holder: AreasAdapter.ViewHolder, position: Int) {
-        val contact = areasList[position]
+        val area = areasList[position]
 
-        areaItemBinding.titleTextView.text = contact.name
+        areaItemBinding.titleTextView.text = area.name
 
         holder.itemView.setOnClickListener {
-            getList(contact.id)
+            (context as BottomNavigationActivity).showFragment(ContactsListFragment(), model = area.contacts)
         }
 
-    }
-
-    private fun getList(id : Int){
-       ContactsManager.getInstance(context = context).setContactsGroupsListener(this)
-       ContactsManager.getInstance(context = context).getIndividualArea(id = id)
     }
 
     override fun getItemCount(): Int {
@@ -48,13 +42,4 @@ class AreasAdapter(var context : Context, var areasList : List<AreaModel>) : Rec
     }
 
     inner class ViewHolder(v : View) : RecyclerView.ViewHolder(v)
-
-    override fun onContactsGroupsSuccess(areasList: LiveData<List<AreaModel>>) {
-        (context as BottomNavigationActivity).showFragment(ContactsListFragment())
-    }
-
-    override fun onContactsGroupsFail(message: String, code: Int?) {
-        Toast.makeText(context, "error", Toast.LENGTH_SHORT).show()
-    }
-
 }
