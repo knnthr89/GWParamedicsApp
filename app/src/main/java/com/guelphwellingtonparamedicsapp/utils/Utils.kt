@@ -25,7 +25,7 @@ object Utils {
         return hasInternet
     }
 
-    fun validateEmail(email : String) : Boolean {
+    fun validateEmail(email: String) : Boolean {
         return  EMAIL_ADDRESS_PATTERN.matcher(email).matches()
     }
 

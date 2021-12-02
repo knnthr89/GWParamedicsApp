@@ -21,7 +21,7 @@
         <entry key="app/src/main/res/drawable/box_border_gray.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable/ic_no_internet.xml" value="0.18802083333333333" />
         <entry key="app/src/main/res/drawable/splash_screen.xml" value="0.18802083333333333" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.375" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.17083333333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.375" />
         <entry key="app/src/main/res/layout/activity_offline.xml" value="0.375" />
         <entry key="app/src/main/res/layout/answer_item.xml" value="0.5" />

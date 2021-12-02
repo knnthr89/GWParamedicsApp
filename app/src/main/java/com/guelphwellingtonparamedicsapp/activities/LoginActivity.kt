@@ -13,7 +13,6 @@ import com.guelphwellingtonparamedicsapp.databinding.ActivityLoginBinding
 import com.guelphwellingtonparamedicsapp.entities.User
 import com.guelphwellingtonparamedicsapp.manager.SessionManager
 import com.guelphwellingtonparamedicsapp.utils.Utils
-import org.jetbrains.anko.toast
 
 class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
 
