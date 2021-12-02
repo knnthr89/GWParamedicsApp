@@ -6,6 +6,7 @@ ext {
     gifVersion = '1.2.22'
     ankoVersion = '0.10.4'
     picassoVersion = '2.71828'
+    mockitoVersion = "4.0.0"
 }
 
 buildscript {

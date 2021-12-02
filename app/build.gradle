@@ -73,4 +73,6 @@ dependencies {
 
     //imageview
     implementation "com.squareup.picasso:picasso:$rootProject.picassoVersion"
+
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$rootProject.mockitoVersion"
 }
