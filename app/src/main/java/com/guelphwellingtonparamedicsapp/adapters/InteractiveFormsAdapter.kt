@@ -16,7 +16,7 @@ import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
 
 class InteractiveFormsAdapter(private var context: Context,
-                              private var interactiveFormsList: ArrayList<InteractiveFormModel>,
+                              private var interactiveFormsList: List<InteractiveFormModel>,
                               private var listener: SelectedInteractiveForm
 ) : RecyclerView.Adapter<InteractiveFormsAdapter.ViewHolder>() {
 
@@ -48,8 +48,6 @@ class InteractiveFormsAdapter(private var context: Context,
         interactiveFormItemBinding.imageButton.setOnClickListener {
             listener?.selected(interactiveForm.id)
         }
-
-
     }
 
     override fun getItemCount(): Int {
