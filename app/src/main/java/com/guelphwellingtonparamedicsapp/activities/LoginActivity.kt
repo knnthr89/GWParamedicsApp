@@ -1,5 +1,6 @@
 package com.guelphwellingtonparamedicsapp.activities
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,9 @@ import com.guelphwellingtonparamedicsapp.databinding.ActivityLoginBinding
 import com.guelphwellingtonparamedicsapp.entities.User
 import com.guelphwellingtonparamedicsapp.manager.SessionManager
 import com.guelphwellingtonparamedicsapp.utils.Utils
+import android.os.Vibrator
+
+
 
 class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
 
@@ -27,6 +31,7 @@ class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
         supportActionBar?.hide()
 
         activityLoginBinding.signinButton.setOnClickListener {
+           Utils.vibrate(application = application)
             if (Utils.hasInternetConnection(context = this)) {
                 if(Utils.validateEmail(activityLoginBinding.emailEt.text.toString()) && Utils.validatePassword(activityLoginBinding.passwordEt.toString())){
                     if (activityLoginBinding.emailEt.text.toString()
@@ -49,8 +54,14 @@ class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
                 Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT)
                     .show()
             }
-
         }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        activityLoginBinding.emailEt.setText("")
+        activityLoginBinding.passwordEt.setText("")
+
     }
 
     override fun onLoginSuccess(token: String) {
@@ -69,11 +80,8 @@ class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
                 list = mUserDao!!.getUser()
 
                 if(list.isNotEmpty()){
-
                     val intent = Intent(this, BottomNavigationActivity::class.java)
                     startActivity(intent)
-                    finish()
-
                 }else{
                    Toast.makeText(this, "", Toast.LENGTH_SHORT).show()
                 }

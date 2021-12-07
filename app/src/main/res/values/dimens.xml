@@ -2,7 +2,9 @@
 <resources>
     <dimen name="logo_splash_screen">16dp</dimen>
     <dimen name="margin_150">150dp</dimen>
+    <dimen name="margin_100">100dp</dimen>
     <dimen name="text_size_23sp">23sp</dimen>
+    <dimen name="text_size_28sp">28sp</dimen>
     <dimen name="margin_50">50dp</dimen>
     <dimen name="edittext_48dp">48dp</dimen>
     <dimen name="edittext_40dp">40dp</dimen>

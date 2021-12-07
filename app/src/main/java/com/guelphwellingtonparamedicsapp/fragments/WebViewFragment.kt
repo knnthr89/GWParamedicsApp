@@ -9,10 +9,12 @@ import com.guelphwellingtonparamedicsapp.R
 import android.webkit.WebView
 import androidx.databinding.DataBindingUtil
 import com.guelphwellingtonparamedicsapp.databinding.FragmentWebViewBinding
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class WebViewFragment : Fragment(), View.OnClickListener {
 
     private var url : String = ""
+    private var back : Boolean = true
     private lateinit var fragmentWebViewBinding : FragmentWebViewBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +22,7 @@ class WebViewFragment : Fragment(), View.OnClickListener {
 
         arguments?.let {
              url = it.getString("url").toString()
+             back = it.getBoolean("back")
         }
     }
 
@@ -40,15 +43,16 @@ class WebViewFragment : Fragment(), View.OnClickListener {
 
         fragmentWebViewBinding.back.setOnClickListener(this)
 
+        if(!back){
+            fragmentWebViewBinding.contactHeader.visibility = View.GONE
+        }
+
         return fragmentWebViewBinding.root
-    }
-    fun backButton(){
-        fragmentManager?.popBackStack()
     }
 
     override fun onClick(v: View?) {
         when(v){
-            fragmentWebViewBinding.back -> backButton()
+            fragmentWebViewBinding.back -> Utils.backButton(fragmentManager = requireFragmentManager(), application = requireActivity().application)
         }
     }
 }

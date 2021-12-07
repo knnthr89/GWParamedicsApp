@@ -20,6 +20,7 @@ import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager.SavePatientA
 import com.guelphwellingtonparamedicsapp.models.AnswerModel
 import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.QuestionModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -55,6 +56,7 @@ class IndividualFormFragment : Fragment(), SelectedAnswer, SaveAnswer, SavePatie
         }
 
         fragmentIndividualFormBinding.calculateBtn.setOnClickListener {
+            Utils.vibrate(application = requireActivity().application)
             if (hashmapAnswers.isNotEmpty() && fragmentIndividualFormBinding.patientIdEt.text.isNotBlank() && fragmentIndividualFormBinding.paramedicsEt.text.isNotBlank() && fragmentIndividualFormBinding.dateEt.text.isNotBlank()) {
                 AssessmentsManager.getInstance(requireContext()).setSavePatientAssessment(this)
                 AssessmentsManager.getInstance(requireContext()).savePatientAssessment(

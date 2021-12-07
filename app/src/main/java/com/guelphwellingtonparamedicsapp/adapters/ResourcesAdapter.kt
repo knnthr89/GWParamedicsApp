@@ -20,9 +20,11 @@ import com.guelphwellingtonparamedicsapp.models.IndividualFormModel
 import com.guelphwellingtonparamedicsapp.models.ResourceModel
 import com.squareup.picasso.Picasso
 import android.app.Activity
+import android.app.Application
 import androidx.databinding.DataBindingUtil
 import com.guelphwellingtonparamedicsapp.databinding.ResourceItemBinding
 import com.guelphwellingtonparamedicsapp.fragments.ListContactsFragment
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 
 class ResourcesAdapter(private var context: Context,
@@ -31,6 +33,7 @@ class ResourcesAdapter(private var context: Context,
 
     private var activity = context as Activity
     private lateinit var resourceItemBinding : ResourceItemBinding
+    private val application : Application = context.applicationContext as Application
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -51,10 +54,11 @@ class ResourcesAdapter(private var context: Context,
         resourceItemBinding.resourceNameTv.text = resource.location
 
         holder.itemView.setOnClickListener {
+            Utils.vibrate(application = application)
             if (resource.contacts != null){
                 (activity as BottomNavigationActivity).showFragment(ListContactsFragment(), model = resource.contacts)
             }else{
-                Toast.makeText(context, "nulllll", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "null", Toast.LENGTH_SHORT).show()
             }
         }
     }

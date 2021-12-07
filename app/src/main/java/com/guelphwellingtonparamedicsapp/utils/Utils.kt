@@ -1,9 +1,22 @@
 package com.guelphwellingtonparamedicsapp.utils
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
+import android.content.Context.VIBRATOR_SERVICE
+import android.media.effect.Effect
 import android.net.ConnectivityManager
+import android.os.Build
+import android.os.VibrationEffect.*
+import android.os.Vibrator
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
 import java.util.regex.Pattern
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.fragment.app.FragmentManager
+
 
 object Utils {
     fun hasInternetConnection(context: Context): Boolean {
@@ -31,6 +44,18 @@ object Utils {
 
     fun validatePassword(password : String) : Boolean{
         return password.length >= 8
+    }
+
+    fun vibrate(application: Application){
+        val v = application.getSystemService(VIBRATOR_SERVICE) as Vibrator?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            v!!.vibrate(createPredefined(EFFECT_CLICK))
+        }
+    }
+
+    fun backButton(fragmentManager : FragmentManager, application: Application){
+        vibrate(application = application)
+        fragmentManager?.popBackStack()
     }
 
     val EMAIL_ADDRESS_PATTERN: Pattern = Pattern.compile(

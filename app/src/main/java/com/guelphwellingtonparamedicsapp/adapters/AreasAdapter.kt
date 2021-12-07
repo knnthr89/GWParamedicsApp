@@ -1,5 +1,6 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -16,10 +17,12 @@ import com.guelphwellingtonparamedicsapp.fragments.IndividualFormFragment
 import com.guelphwellingtonparamedicsapp.manager.ContactsManager
 import com.guelphwellingtonparamedicsapp.manager.ContactsManager.ContactsGroupsListener
 import com.guelphwellingtonparamedicsapp.models.DepartmentModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class AreasAdapter(var context : Context, var areasList : List<DepartmentModel>) : RecyclerView.Adapter<AreasAdapter.ViewHolder>() {
 
     private lateinit var areaItemBinding : AreaItemBinding
+    private val application : Application = context.applicationContext as Application
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AreasAdapter.ViewHolder {
         areaItemBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.area_item, parent, false)
@@ -32,6 +35,7 @@ class AreasAdapter(var context : Context, var areasList : List<DepartmentModel>)
         areaItemBinding.titleTextView.text = area.name
 
         holder.itemView.setOnClickListener {
+            Utils.vibrate(application = application)
             (context as BottomNavigationActivity).showFragment(ContactsListFragment(), model = area.contacts)
         }
 

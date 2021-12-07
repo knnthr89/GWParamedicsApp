@@ -5,7 +5,10 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_margin="@dimen/logo_splash_screen">
+        android:layout_marginLeft="@dimen/logo_splash_screen"
+        android:layout_marginTop="@dimen/logo_splash_screen"
+        android:layout_marginRight="@dimen/logo_splash_screen"
+        android:layout_marginBottom="@dimen/margin_50">
 
         <RelativeLayout
             android:id="@+id/contactHeader"

@@ -20,7 +20,7 @@ class Communication(var context: Context?) {
 
     companion object {
        private val SERVER = "http://10.0.2.2:5000/"
-        // private val SERVER = "http://49d3-2607-fea8-1be0-1bcb-7c4a-f1b7-896e-7d6b.ngrok.io/"
+       // private val SERVER = "http://ac87-2607-9880-1a00-1d5-2dde-4a1-f6b4-e63a.ngrok.io/"
     }
 
     private var communicationListener: CommunicationListener? = null

@@ -15,4 +15,5 @@
     <color name="background_item">#08589D</color>
     <color name="text_options_login">#686868</color>
     <color name="blue_link">#0645AD</color>
+    <color name="red_link">#FF5733</color>
 </resources>

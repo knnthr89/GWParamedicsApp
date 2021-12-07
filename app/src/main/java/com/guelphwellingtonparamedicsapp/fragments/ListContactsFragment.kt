@@ -16,6 +16,7 @@ import com.guelphwellingtonparamedicsapp.activities.BottomNavigationActivity
 import com.guelphwellingtonparamedicsapp.adapters.ContactsAdapter
 import com.guelphwellingtonparamedicsapp.databinding.FragmentListContactsBinding
 import com.guelphwellingtonparamedicsapp.models.ContactModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class ListContactsFragment : Fragment(), View.OnClickListener {
 
@@ -44,7 +45,7 @@ class ListContactsFragment : Fragment(), View.OnClickListener {
         fragmentListContactsBinding.websiteUrlTv.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
         fragmentListContactsBinding.websiteUrlTv.setOnClickListener {
-            (activity as BottomNavigationActivity).showFragment(WebViewFragment(), url = fragmentListContactsBinding.websiteUrlTv.text.toString())
+            (activity as BottomNavigationActivity).showFragment(WebViewFragment(), url = fragmentListContactsBinding.websiteUrlTv.text.toString(), back = true)
         }
 
         if(contactList?.size!! > 0){
@@ -67,11 +68,7 @@ class ListContactsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v : View?) {
        when(v){
-           fragmentListContactsBinding.back -> backButton()
+           fragmentListContactsBinding.back -> Utils.backButton(fragmentManager = requireFragmentManager(), application = requireActivity().application)
        }
-    }
-
-    private fun backButton(){
-        fragmentManager?.popBackStack()
     }
 }

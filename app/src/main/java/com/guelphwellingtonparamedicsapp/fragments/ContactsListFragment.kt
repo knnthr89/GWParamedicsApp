@@ -11,6 +11,7 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.ParamedicsAdapter
 import com.guelphwellingtonparamedicsapp.databinding.FragmentContactsListBinding
 import com.guelphwellingtonparamedicsapp.models.ParamedicModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 
 class ContactsListFragment : Fragment(), View.OnClickListener {
@@ -49,14 +50,9 @@ class ContactsListFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when(v){
-            contactsListBinding.back -> backButton()
+            contactsListBinding.back -> Utils.backButton(fragmentManager = requireFragmentManager(), application = requireActivity().application)
         }
 
 
     }
-
-    private fun backButton(){
-        fragmentManager?.popBackStack()
-    }
-
 }

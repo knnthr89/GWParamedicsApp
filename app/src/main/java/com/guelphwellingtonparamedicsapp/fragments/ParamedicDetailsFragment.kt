@@ -12,6 +12,7 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.adapters.ParamedicDetailsAdapter
 import com.guelphwellingtonparamedicsapp.databinding.FragmentParamedicDetailsBinding
 import com.guelphwellingtonparamedicsapp.models.ParamedicModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class ParamedicDetailsFragment : Fragment(), View.OnClickListener {
 
@@ -60,11 +61,7 @@ class ParamedicDetailsFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
        when(v){
-           fragmentParamedicDetailsBinding.back -> backButton()
+           fragmentParamedicDetailsBinding.back -> Utils.backButton(fragmentManager = requireFragmentManager(), application = requireActivity().application)
        }
-    }
-
-    private fun backButton(){
-        fragmentManager?.popBackStack()
     }
 }

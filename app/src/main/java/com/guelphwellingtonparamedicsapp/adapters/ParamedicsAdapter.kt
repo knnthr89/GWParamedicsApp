@@ -1,5 +1,6 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -10,10 +11,13 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.activities.BottomNavigationActivity
 import com.guelphwellingtonparamedicsapp.fragments.ParamedicDetailsFragment
 import com.guelphwellingtonparamedicsapp.models.ParamedicModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class ParamedicsAdapter(private var context: Context,
                         private var paramedicsList : ArrayList<ParamedicModel>
 ) : RecyclerView.Adapter<ParamedicsAdapter.ViewHolder>() {
+
+    private val application : Application = context.applicationContext as Application
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParamedicsAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
@@ -28,6 +32,7 @@ class ParamedicsAdapter(private var context: Context,
         holder.titleTextView.text = paramedic.name
 
         holder.itemView.setOnClickListener {
+            Utils.vibrate(application = application)
             (context as BottomNavigationActivity).showFragment(ParamedicDetailsFragment(), model = paramedic)
         }
 

@@ -1,5 +1,6 @@
 package com.guelphwellingtonparamedicsapp.adapters
 
+import android.app.Application
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.guelphwellingtonparamedicsapp.R
 import com.guelphwellingtonparamedicsapp.databinding.InteractiveFormItemBinding
 import com.guelphwellingtonparamedicsapp.manager.AssessmentsManager
 import com.guelphwellingtonparamedicsapp.models.InteractiveFormModel
+import com.guelphwellingtonparamedicsapp.utils.Utils
 
 class InteractiveFormsAdapter(private var context: Context,
                               private var interactiveFormsList: List<InteractiveFormModel>,
@@ -21,6 +23,7 @@ class InteractiveFormsAdapter(private var context: Context,
 ) : RecyclerView.Adapter<InteractiveFormsAdapter.ViewHolder>() {
 
     private lateinit var interactiveFormItemBinding: InteractiveFormItemBinding
+    private val application : Application = context.applicationContext as Application
 
     interface SelectedInteractiveForm {
         fun selected(id: Int)
@@ -42,6 +45,7 @@ class InteractiveFormsAdapter(private var context: Context,
         interactiveFormItemBinding.titleTextView.text = interactiveForm.title
 
         holder.itemView.setOnClickListener {
+            Utils.vibrate(application = application)
             listener?.selected(interactiveForm.id)
         }
 

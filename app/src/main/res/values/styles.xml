@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="colorAccent">@color/purple_500</item>
-        <item name="android:windowActionBar">false</item>
+        <item name="colorPrimary">@color/blue_link</item>
+        <item name="colorPrimaryDark">@color/red_link</item>
+        <item name="colorAccent">@color/background_item</item>
+        <item name="android:statusBarColor">@color/blue_link</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@drawable/splash_screen</item>
         <item name="android:windowActionBar">false</item>
+        <item name="colorPrimary">@color/blue_link</item>
+        <item name="colorPrimaryDark">@color/red_link</item>
+        <item name="colorAccent">@color/background_item</item>
+        <item name="android:statusBarColor">@color/blue_link</item>
     </style>
 
 </resources>

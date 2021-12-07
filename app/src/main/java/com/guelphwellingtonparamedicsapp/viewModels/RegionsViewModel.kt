@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.guelphwellingtonparamedicsapp.database.AppDatabase.Companion.context
 import com.guelphwellingtonparamedicsapp.manager.ResourcesManager
 import com.guelphwellingtonparamedicsapp.manager.ResourcesManager.GetResourcesListener
 import com.guelphwellingtonparamedicsapp.models.RegionModel
@@ -14,6 +13,7 @@ import com.guelphwellingtonparamedicsapp.models.RegionModel
 class RegionsViewModel(context: Context) : AndroidViewModel(context.applicationContext as Application), GetResourcesListener {
 
     private var mAllRegions = MutableLiveData<List<RegionModel>>()
+    private val context = context
 
     init {
         ResourcesManager.getInstance(context).setAllResourcesListener(this)

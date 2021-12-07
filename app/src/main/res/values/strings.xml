@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">GuelphWellingtonParamedicsApp</string>
+    <string name="app_name">GWP App</string>
     <string name="welcome_string">Welcome,</string>
     <string name="signin_string">Sign in to continue</string>
     <string name="forgot_password">Forgot Password?</string>
@@ -8,6 +8,8 @@
     <string name="email">Email</string>
     <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
     <string name="email_validation">The email format is invalid, try again!</string>
+
+    <string name="conditions_login_text">By proceeding you also agree to the terms of Service and Privacy Policy</string>
 
     <string name="title_assessments">Assessments</string>
     <string name="title_resources">Resources</string>
@@ -44,4 +46,6 @@
     <string name="website">Website:</string>
     <string name="work_phone">Work Phone:</string>
 
+    <string name="title_logout">Logout</string>
+    <string name="title_protection">Information Protection Act</string>
 </resources>
