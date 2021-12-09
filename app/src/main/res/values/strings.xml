@@ -8,6 +8,8 @@
     <string name="email">Email</string>
     <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
     <string name="email_validation">The email format is invalid, try again!</string>
+    <string name="password_validation">The password size must be at least 8 characters</string>
+    <string name="forgot_password_message">You must contact the superuser to update your password</string>
 
     <string name="conditions_login_text">By proceeding you also agree to the terms of Service and Privacy Policy</string>
 

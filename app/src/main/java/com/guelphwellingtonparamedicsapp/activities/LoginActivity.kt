@@ -33,27 +33,33 @@ class LoginActivity : AppCompatActivity(), SessionManager.LoginListener {
         activityLoginBinding.signinButton.setOnClickListener {
            Utils.vibrate(application = application)
             if (Utils.hasInternetConnection(context = this)) {
-                if(Utils.validateEmail(activityLoginBinding.emailEt.text.toString()) && Utils.validatePassword(activityLoginBinding.passwordEt.toString())){
-                    if (activityLoginBinding.emailEt.text.toString()
-                            .isNotBlank() && activityLoginBinding.passwordEt.text.toString()
-                            .isNotBlank()
-                    ) {
-                        SessionManager.getInstance(this).setLoginListener(this)
-                        SessionManager.getInstance(this).getlogin(
-                            email = activityLoginBinding.emailEt.text.toString(),
-                            password = activityLoginBinding.passwordEt.text.toString()
-                        )
-                    } else {
-                        Toast.makeText(this, getString(R.string.login_email_error), Toast.LENGTH_SHORT)
-                            .show()
+                if(Utils.validateEmail(activityLoginBinding.emailEt.text.toString())){
+                    if(Utils.validatePassword(activityLoginBinding.passwordEt.text.toString())){
+                        if (activityLoginBinding.emailEt.text.toString()
+                                .isNotBlank() && activityLoginBinding.passwordEt.text.toString()
+                                .isNotBlank()
+                        ) {
+                            SessionManager.getInstance(this).setLoginListener(this)
+                            SessionManager.getInstance(this).getlogin(
+                                email = activityLoginBinding.emailEt.text.toString(),
+                                password = activityLoginBinding.passwordEt.text.toString()
+                            )
+                        } else {
+                            activityLoginBinding.errorMessage.text = getString(R.string.login_email_error)
+                        }
+                    }else{
+                        activityLoginBinding.errorMessage.text = getString(R.string.password_validation)
                     }
                 }else{
-                    Toast.makeText(this, getString(R.string.email_validation), Toast.LENGTH_SHORT).show()
+                    activityLoginBinding.errorMessage.text = getString(R.string.email_validation)
                 }
             } else {
-                Toast.makeText(this, getString(R.string.no_internet_connection), Toast.LENGTH_SHORT)
-                    .show()
+                activityLoginBinding.errorMessage.text = getString(R.string.no_internet_connection)
             }
+        }
+
+        activityLoginBinding.forgotPasswordTv.setOnClickListener {
+            activityLoginBinding.errorMessage.text = getString(R.string.forgot_password_message)
         }
     }
 

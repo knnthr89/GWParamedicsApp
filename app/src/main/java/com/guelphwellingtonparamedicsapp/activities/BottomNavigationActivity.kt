@@ -26,7 +26,6 @@ class BottomNavigationActivity : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bottom_navigation)
-        //supportActionBar!!.hide()
         supportActionBar?.setDisplayShowTitleEnabled(false)
         bottomNavigationView = findViewById(R.id.nav_view)
         bottomNavigationView.setOnNavigationItemSelectedListener(this)

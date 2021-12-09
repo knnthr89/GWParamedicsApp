@@ -89,6 +89,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
+                    android:id="@+id/forgotPasswordTv"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
@@ -96,6 +97,12 @@
                     android:text="@string/forgot_password"
                     android:textStyle="bold" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/errorMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/logo_splash_screen" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -108,7 +115,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom"
-                    android:layout_margin="@dimen/logo_splash_screen"
+                    android:layout_marginStart="@dimen/logo_splash_screen"
+                    android:layout_marginTop="@dimen/logo_splash_screen"
+                    android:layout_marginEnd="@dimen/logo_splash_screen"
+                    android:layout_marginBottom="@dimen/logo_splash_screen"
                     android:background="@color/blue_link"
                     android:text="@string/sign_in"
                     android:textAllCaps="false"
